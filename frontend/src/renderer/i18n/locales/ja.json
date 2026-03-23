@@ -1,0 +1,120 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "update": "更新",
+    "search": "検索",
+    "retry": "再試行",
+    "confirm": "確認",
+    "error": "エラー",
+    "success": "成功",
+    "loading": "読み込み中...",
+    "yes": "はい",
+    "no": "いいえ",
+    "back": "戻る",
+    "unknownError": "不明なエラー",
+    "processing": "処理中...",
+    "reload": "再読み込み"
+  },
+  "header": {
+    "title": "ElectronBase",
+    "loginWallet": "ログインWALLET",
+    "loginGoogle": "ログインGoogle",
+    "loginGuest": "ゲスト",
+    "connectWallet": "ウォレット接続",
+    "connect": "接続",
+    "switchWallet": "切替",
+    "logout": "ログアウト",
+    "menu": "メニュー"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "top": "ホーム",
+    "billing": "課金",
+    "accountLink": "アカウント連携"
+  },
+  "login": {
+    "title": "ElectronBase",
+    "subtitle": "ログイン方法を選択してください",
+    "walletConnectLogin": "WalletConnectでログイン",
+    "googleLogin": "Googleでログイン",
+    "guestLogin": "ゲストとして開始",
+    "guestNote": "ゲスト利用はログアウト時にデータが消えます",
+    "signing": "署名中...",
+    "processing": "処理中...",
+    "loginFailed": "ログインに失敗しました",
+    "guestLogoutWarningTitle": "ログアウトの確認",
+    "guestLogoutWarningBody": "ゲストモードでログアウトするとデータがすべて消去されます。よろしいですか？",
+    "guestLogoutConfirm": "データを消去してログアウト"
+  },
+  "top": {
+    "billing": {
+      "title": "課金プラン",
+      "statusFree": "無料プラン",
+      "statusSubscribed": "有料プラン（契約中）",
+      "statusRequired": "有料プランが必要",
+      "thisMonth": "今月の使用量",
+      "manage": "管理"
+    },
+    "guest": {
+      "title": "ゲストモードで利用中",
+      "description": "アカウントを連携するとデータが保持されます",
+      "link": "アカウント連携"
+    },
+    "maintenance": {
+      "title": "メンテナンス中"
+    },
+    "version": {
+      "updateAvailable": "アップデートがあります",
+      "latest": "最新バージョン",
+      "download": "ダウンロード"
+    }
+  },
+  "accountLink": {
+    "title": "アカウント連携",
+    "placeholder": "（実装予定）ゲストアカウントをGoogle / ウォレットに連携します"
+  },
+  "billing": {
+    "title": "課金管理",
+    "placeholder": "（実装予定）課金プランの確認・変更ができます",
+    "subscribe": "有料プランに登録",
+    "cancel": "解約する",
+    "reactivate": "解約を取り消す",
+    "cancelAtPeriodEnd": "月末に解約予定",
+    "subscribed": "契約中",
+    "free": "無料プラン",
+    "requiresSubscription": "有料プランへの登録が必要です",
+    "thisMonth": "今月",
+    "lastMonth": "先月",
+    "pointsUnit": "pt",
+    "checkoutSuccess": "有料プランへの登録が完了しました",
+    "checkoutCancel": "登録がキャンセルされました"
+  },
+  "maintenance": {
+    "title": "メンテナンス中",
+    "message": "現在メンテナンス中のため、一時的にご利用いただけません。",
+    "scheduledEnd": "終了予定"
+  },
+  "version": {
+    "updateRequired": "アップデートが必要です",
+    "updateAvailable": "アップデートがあります",
+    "current": "現在のバージョン",
+    "latest": "最新バージョン",
+    "downloadUpdate": "アップデートをダウンロード",
+    "remindLater": "後で確認"
+  },
+  "error": {
+    "title": "エラーが発生しました",
+    "unknown": "予期しないエラーが発生しました",
+    "network": "ネットワークエラーが発生しました"
+  },
+  "connectionChoice": {
+    "title": "接続方法を選択",
+    "walletConnect": "WalletConnectで接続"
+  }
+}

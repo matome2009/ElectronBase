@@ -1,0 +1,27 @@
+{
+  "projects": {
+    "default": "token-batch-transfer"
+  },
+  "targets": {
+    "token-batch-transfer": {
+      "hosting": {
+        "dev": [
+          "token-batch-transfer-dev"
+        ],
+        "prd": [
+          "token-batch-transfer-prd"
+        ],
+        "admin-dev": [
+          "token-batch-transfer-dev-admin"
+        ],
+        "admin-prd": [
+          "token-batch-transfer-prd-admin"
+        ],
+        "website": [
+          "token-batch-transfer"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

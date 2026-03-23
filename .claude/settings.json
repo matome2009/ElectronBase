@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /home/masaki-ubuntu/workspace/ElectronBase/frontend/src/renderer/services/*.bak)",
+      "Bash(ls /home/masaki-ubuntu/workspace/ElectronBase/frontend/src/renderer/services/*.test.ts)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}

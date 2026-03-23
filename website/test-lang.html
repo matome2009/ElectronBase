@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Test</title>
+  <style>
+    .lang-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      background: white;
+    }
+    .lang-btn.active {
+      border-color: blue;
+      background: lightblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Language Switcher Test</h1>
+  
+  <div>
+    <button class="lang-btn active" data-lang="ja">🇯🇵 日本語</button>
+    <button class="lang-btn" data-lang="en">🇺🇸 English</button>
+    <button class="lang-btn" data-lang="ko">🇰🇷 한국어</button>
+    <button class="lang-btn" data-lang="zh">🇨🇳 中文</button>
+  </div>
+  
+  <div style="margin-top: 20px;">
+    <h2 data-i18n="hero.title">イベントチケット管理を<br>もっとシンプルに</h2>
+    <p data-i18n="hero.subtitle">QRコードでチケット発行・入場管理・販売まで。<br>イベント運営に必要な全てが揃っています。</p>
+    <p data-i18n="download.open">ブラウザで始める</p>
+  </div>
+  
+  <div id="debug" style="margin-top: 20px; padding: 10px; background: #f0f0f0;">
+    <strong>Debug Info:</strong>
+    <div id="debug-info"></div>
+  </div>
+  
+  <script src="js/i18n.js"></script>
+  <script>
+    // デバッグ情報を表示
+    function updateDebug() {
+      const debugInfo = document.getElementById('debug-info');
+      const currentLang = localStorage.getItem('preferredLanguage') || 'not set';
+      debugInfo.innerHTML = `
+        <p>Current Language: ${currentLang}</p>
+        <p>Translations loaded: ${Object.keys(translations).join(', ')}</p>
+        <p>Active button: ${document.querySelector('.lang-btn.active')?.getAttribute('data-lang') || 'none'}</p>
+      `;
+    }
+    
+    // 初期表示
+    setTimeout(updateDebug, 100);
+    
+    // 言語変更を監視
+    window.addEventListener('languageChanged', (e) => {
+      console.log('Language changed to:', e.detail.lang);
+      updateDebug();
+    });
+    
+    // ボタンクリックを監視
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        console.log('Button clicked:', btn.getAttribute('data-lang'));
+      });
+    });
+  </script>
+</body>
+</html>

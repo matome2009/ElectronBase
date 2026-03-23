@@ -1,0 +1,120 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "update": "Update",
+    "search": "Search",
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "error": "Error",
+    "success": "Success",
+    "loading": "Loading...",
+    "yes": "Yes",
+    "no": "No",
+    "back": "Back",
+    "unknownError": "Unknown error",
+    "processing": "Processing...",
+    "reload": "Reload"
+  },
+  "header": {
+    "title": "ElectronBase",
+    "loginWallet": "Login WALLET",
+    "loginGoogle": "Login Google",
+    "loginGuest": "Guest",
+    "connectWallet": "Connect Wallet",
+    "connect": "Connect",
+    "switchWallet": "Switch",
+    "logout": "Logout",
+    "menu": "Menu"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "top": "Home",
+    "billing": "Billing",
+    "accountLink": "Link Account"
+  },
+  "login": {
+    "title": "ElectronBase",
+    "subtitle": "Select a login method",
+    "walletConnectLogin": "Login with WalletConnect",
+    "googleLogin": "Login with Google",
+    "guestLogin": "Start as Guest",
+    "guestNote": "Guest data will be lost on logout",
+    "signing": "Signing...",
+    "processing": "Processing...",
+    "loginFailed": "Login failed",
+    "guestLogoutWarningTitle": "Confirm Logout",
+    "guestLogoutWarningBody": "Logging out as a guest will erase all your data. Are you sure?",
+    "guestLogoutConfirm": "Erase data and logout"
+  },
+  "top": {
+    "billing": {
+      "title": "Billing Plan",
+      "statusFree": "Free Plan",
+      "statusSubscribed": "Subscribed",
+      "statusRequired": "Subscription Required",
+      "thisMonth": "This month usage",
+      "manage": "Manage"
+    },
+    "guest": {
+      "title": "Using as Guest",
+      "description": "Link an account to keep your data",
+      "link": "Link Account"
+    },
+    "maintenance": {
+      "title": "Under Maintenance"
+    },
+    "version": {
+      "updateAvailable": "Update Available",
+      "latest": "Latest version",
+      "download": "Download"
+    }
+  },
+  "accountLink": {
+    "title": "Link Account",
+    "placeholder": "(Coming soon) Link your guest account to Google / Wallet"
+  },
+  "billing": {
+    "title": "Billing",
+    "placeholder": "(Coming soon) View and manage your billing plan",
+    "subscribe": "Subscribe to Paid Plan",
+    "cancel": "Cancel Subscription",
+    "reactivate": "Reactivate Subscription",
+    "cancelAtPeriodEnd": "Cancels at end of period",
+    "subscribed": "Subscribed",
+    "free": "Free Plan",
+    "requiresSubscription": "A paid plan is required",
+    "thisMonth": "This month",
+    "lastMonth": "Last month",
+    "pointsUnit": "pt",
+    "checkoutSuccess": "Successfully subscribed to paid plan",
+    "checkoutCancel": "Subscription was cancelled"
+  },
+  "maintenance": {
+    "title": "Under Maintenance",
+    "message": "The service is temporarily unavailable due to maintenance.",
+    "scheduledEnd": "Expected end"
+  },
+  "version": {
+    "updateRequired": "Update Required",
+    "updateAvailable": "Update Available",
+    "current": "Current version",
+    "latest": "Latest version",
+    "downloadUpdate": "Download Update",
+    "remindLater": "Remind Later"
+  },
+  "error": {
+    "title": "An error occurred",
+    "unknown": "An unexpected error occurred",
+    "network": "A network error occurred"
+  },
+  "connectionChoice": {
+    "title": "Select Connection Method",
+    "walletConnect": "Connect with WalletConnect"
+  }
+}

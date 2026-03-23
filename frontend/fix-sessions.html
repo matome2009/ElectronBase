@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>セッションデータ修正 - Web3 Payroll Guardian</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #28a745;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        button.secondary {
+            background: #6c757d;
+        }
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        button.danger:hover {
+            background: #c82333;
+        }
+        button.icon-button {
+            padding: 10px 12px;
+            line-height: 1;
+        }
+        .info {
+            background: #e7f3ff;
+            border: 1px solid #2196F3;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .code {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        .status-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 4px solid #2196F3;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 セッションデータ修正ツール</h1>
+        
+        <div class="warning">
+            <strong>⚠️ 問題:</strong> セッションデータに古いスマートコントラクトアドレスが保存されています。<br>
+            このツールは、すべてのセッションのBSC Testnet設定を新しいアドレスに更新します。
+        </div>
+
+        <div class="success" id="successMessage">
+            <strong>✅ 成功!</strong> セッションデータが更新されました。<br>
+            新しいコントラクトアドレス <code>0xb74546BD63B11C3955065B0A7fa4aF5B46D28475</code> が使用されます。<br>
+            <strong>アプリケーションをリロード（F5）してください。</strong>
+        </div>
+
+        <div class="error" id="errorMessage">
+            <strong>❌ エラー:</strong> <span id="errorText"></span>
+        </div>
+
+        <div class="status" id="statusContainer">
+            <h3>現在の状態:</h3>
+            <div id="statusContent">読み込み中...</div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button onclick="fixSessions()">セッションデータを修正</button>
+            <button class="secondary" onclick="checkStatus()">状態を確認</button>
+            <button class="danger icon-button" onclick="deleteAllSessions()" title="すべてのセッションを削除">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle;">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="info">
+            <h3>📝 このツールの動作:</h3>
+            <ol>
+                <li>すべてのセッションを読み込む</li>
+                <li>BSC Testnet (Chain ID: 97) の設定を検索</li>
+                <li>古いコントラクトアドレスを新しいアドレスに置き換え</li>
+                <li>セッションレベルとレコードレベルの両方を更新</li>
+                <li>更新したデータを保存</li>
+            </ol>
+            <p><strong>注意:</strong> この操作は元に戻せません。実行前に状態を確認してください。</p>
+        </div>
+    </div>
+
+    <script>
+        const OLD_ADDRESS = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761';
+        const NEW_ADDRESS = '0xb74546BD63B11C3955065B0A7fa4aF5B46D28475';
+
+        function checkStatus() {
+            try {
+                const sessions = JSON.parse(localStorage.getItem('payroll_sessions') || '[]');
+                const networks = JSON.parse(localStorage.getItem('payroll_networks') || '[]');
+                
+                let statusHtml = '';
+                
+                // Check networks
+                statusHtml += '<div class="status-item">';
+                statusHtml += '<strong>ネットワーク設定:</strong><br>';
+                const bscNetwork = networks.find(n => n.chainId === '97');
+                if (bscNetwork) {
+                    const isCorrect = bscNetwork.multiSendContractAddress === NEW_ADDRESS;
+                    statusHtml += `BSC Testnet: <code>${bscNetwork.multiSendContractAddress}</code> `;
+                    statusHtml += isCorrect ? '✅' : '❌';
+                } else {
+                    statusHtml += 'BSC Testnet設定が見つかりません';
+                }
+                statusHtml += '</div>';
+                
+                // Check sessions
+                statusHtml += '<div class="status-item">';
+                statusHtml += `<strong>セッション数:</strong> ${sessions.length}<br>`;
+                
+                let needsFixCount = 0;
+                sessions.forEach((session, index) => {
+                    let sessionNeedsFix = false;
+                    
+                    // Check session-level network config
+                    if (session.networkConfiguration && session.networkConfiguration.chainId === '97') {
+                        if (session.networkConfiguration.multiSendContractAddress !== NEW_ADDRESS) {
+                            sessionNeedsFix = true;
+                            needsFixCount++;
+                        }
+                    }
+                    
+                    // Check record-level network configs
+                    if (session.paymentRecords) {
+                        session.paymentRecords.forEach(record => {
+                            if (record.networkConfiguration && record.networkConfiguration.chainId === '97') {
+                                if (record.networkConfiguration.multiSendContractAddress !== NEW_ADDRESS) {
+                                    sessionNeedsFix = true;
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (sessionNeedsFix) {
+                        statusHtml += `<br>セッション "${session.name}": `;
+                        statusHtml += `<code>${session.networkConfiguration?.multiSendContractAddress || 'N/A'}</code> ❌`;
+                    }
+                });
+                
+                if (needsFixCount === 0) {
+                    statusHtml += '<br><strong style="color: green;">✅ すべてのセッションが正しく設定されています</strong>';
+                } else {
+                    statusHtml += `<br><strong style="color: red;">❌ ${needsFixCount}個のセッションを修正する必要があります</strong>`;
+                }
+                
+                statusHtml += '</div>';
+                
+                document.getElementById('statusContent').innerHTML = statusHtml;
+                
+            } catch (error) {
+                document.getElementById('statusContent').innerHTML = 
+                    `<span style="color: red;">エラー: ${error.message}</span>`;
+            }
+        }
+
+        function fixSessions() {
+            try {
+                // Hide messages
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                
+                // Get sessions
+                const sessions = JSON.parse(localStorage.getItem('payroll_sessions') || '[]');
+                
+                if (sessions.length === 0) {
+                    throw new Error('セッションが見つかりません');
+                }
+                
+                let updatedCount = 0;
+                
+                // Update each session
+                sessions.forEach(session => {
+                    let sessionUpdated = false;
+                    
+                    // Update session-level network configuration
+                    if (session.networkConfiguration && session.networkConfiguration.chainId === '97') {
+                        if (session.networkConfiguration.multiSendContractAddress !== NEW_ADDRESS) {
+                            session.networkConfiguration.multiSendContractAddress = NEW_ADDRESS;
+                            sessionUpdated = true;
+                            console.log(`✅ セッション "${session.name}" のネットワーク設定を更新`);
+                        }
+                    }
+                    
+                    // Update record-level network configurations
+                    if (session.paymentRecords) {
+                        session.paymentRecords.forEach(record => {
+                            if (record.networkConfiguration && record.networkConfiguration.chainId === '97') {
+                                if (record.networkConfiguration.multiSendContractAddress !== NEW_ADDRESS) {
+                                    record.networkConfiguration.multiSendContractAddress = NEW_ADDRESS;
+                                    sessionUpdated = true;
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (sessionUpdated) {
+                        updatedCount++;
+                    }
+                });
+                
+                // Save updated sessions
+                localStorage.setItem('payroll_sessions', JSON.stringify(sessions));
+                
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').innerHTML = 
+                    `<strong>✅ 成功!</strong> ${updatedCount}個のセッションを更新しました。<br>` +
+                    `新しいコントラクトアドレス <code>${NEW_ADDRESS}</code> が使用されます。<br>` +
+                    `<strong>アプリケーションをリロード（F5）してください。</strong>`;
+                
+                // Update status
+                checkStatus();
+                
+            } catch (error) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorText').textContent = error.message;
+                console.error('Error fixing sessions:', error);
+            }
+        }
+
+        function deleteAllSessions() {
+            if (!confirm('本当にすべてのセッションを削除しますか？\n\nこの操作は元に戻せません。')) {
+                return;
+            }
+            
+            try {
+                localStorage.removeItem('payroll_sessions');
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('successMessage').innerHTML = 
+                    '<strong>✅ 成功!</strong> すべてのセッションを削除しました。<br>' +
+                    '<strong>アプリケーションをリロード（F5）してください。</strong>';
+                checkStatus();
+            } catch (error) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorText').textContent = error.message;
+            }
+        }
+
+        // Check status on load
+        checkStatus();
+    </script>
+</body>
+</html>

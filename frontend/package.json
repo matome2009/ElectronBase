@@ -1,0 +1,123 @@
+{
+  "name": "TokenBatchTransfer",
+  "version": "1.0.0",
+  "author": {
+    "name": "TicketSystem",
+    "email": "support@ticketsystem.example.com"
+  },
+  "description": "Web3 ERC20トークン一括送金ツール",
+  "license": "MIT",
+  "homepage": "https://ticketsystem-4bc88.web.app",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev -- --no-sandbox --disable-gpu-sandbox",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview",
+    "test": "vitest",
+    "build:win:dev": "cross-env VITE_PLATFORM=WIN       VITE_DB_ROOT=dev npm run build && electron-builder --win --x64",
+    "build:win-arm:dev": "cross-env VITE_PLATFORM=WIN       VITE_DB_ROOT=dev npm run build && electron-builder --win --arm64",
+    "build:win-store:dev": "cross-env VITE_PLATFORM=WIN-STORE VITE_DB_ROOT=dev npm run build && electron-builder --win --x64",
+    "build:mac:dev": "cross-env VITE_PLATFORM=MAC       VITE_DB_ROOT=dev npm run build && electron-builder --mac",
+    "build:linux:dev": "cross-env VITE_PLATFORM=LINUX     VITE_DB_ROOT=dev npm run build && electron-builder --linux --x64",
+    "build:snap:dev": "cross-env VITE_PLATFORM=SNAP      VITE_DB_ROOT=dev npm run build && electron-builder --linux snap",
+    "build:itch:dev": "cross-env VITE_PLATFORM=ITCH      VITE_DB_ROOT=dev npm run build && electron-builder --linux --x64",
+    "build:win:prd": "cross-env VITE_PLATFORM=WIN       VITE_DB_ROOT=prd npm run build && electron-builder --win --x64",
+    "build:win-arm:prd": "cross-env VITE_PLATFORM=WIN       VITE_DB_ROOT=prd npm run build && electron-builder --win --arm64",
+    "build:win-store:prd": "cross-env VITE_PLATFORM=WIN-STORE VITE_DB_ROOT=prd npm run build && electron-builder --win --x64",
+    "build:mac:prd": "cross-env VITE_PLATFORM=MAC       VITE_DB_ROOT=prd npm run build && electron-builder --mac",
+    "build:linux:prd": "cross-env VITE_PLATFORM=LINUX     VITE_DB_ROOT=prd npm run build && electron-builder --linux --x64",
+    "build:snap:prd": "cross-env VITE_PLATFORM=SNAP      VITE_DB_ROOT=prd npm run build && electron-builder --linux snap",
+    "build:itch:prd": "cross-env VITE_PLATFORM=ITCH      VITE_DB_ROOT=prd npm run build && electron-builder --linux --x64",
+    "web:dev": "vite dev --config vite.web.config.ts --mode development",
+    "build:web:dev": "vite build --config vite.web.config.ts --mode development",
+    "build:web:prd": "vite build --config vite.web.config.ts --mode production"
+  },
+  "keywords": [
+    "web3",
+    "payroll",
+    "ethereum",
+    "electron"
+  ],
+  "dependencies": {
+    "@microsoft/signalr": "^10.0.0",
+    "@react-oauth/google": "^0.13.4",
+    "@tanstack/react-query": "^5.90.21",
+    "@walletconnect/ethereum-provider": "^2.23.7",
+    "@web3modal/wagmi": "^3.5.7",
+    "axios": "^1.6.0",
+    "ethers": "^6.9.0",
+    "firebase": "^12.10.0",
+    "i18next": "^25.10.2",
+    "idb": "^8.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^16.6.0",
+    "react-router-dom": "^7.13.1",
+    "uuid": "^13.0.0",
+    "viem": "^1.21.4",
+    "wagmi": "^1.4.13"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "@vitest/ui": "^4.0.18",
+    "autoprefixer": "^10.4.0",
+    "cross-env": "^10.1.0",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.0",
+    "electron-vite": "^2.3.0",
+    "fast-check": "^4.6.0",
+    "jsdom": "^28.1.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vitest": "^4.0.18"
+  },
+  "build": {
+    "appId": "com.web3payrollguardian.app",
+    "productName": "Web3 Payroll Guardian",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.finance"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "snap": {
+      "plugs": [
+        "default"
+      ],
+      "environment": {
+        "LANG": "ja_JP.UTF-8",
+        "LC_ALL": "ja_JP.UTF-8"
+      },
+      "stagePackages": [
+        "default"
+      ]
+    }
+  }
+}

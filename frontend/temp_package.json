@@ -1,0 +1,10 @@
+{
+  "name": "web3-payroll-guardian",
+  "version": "1.0.0",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev -- --no-sandbox --disable-gpu-sandbox",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  }
+}
