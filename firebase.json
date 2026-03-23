@@ -96,6 +96,6 @@
     ]
   },
   "database": {
-    "rules": "database.rules.json"
+    "rules": "db/realtime-db-rules.json"
   }
 }
