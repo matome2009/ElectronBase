@@ -16,14 +16,13 @@
     "firebase-functions": "^5.0.0",
     "google-auth-library": "^10.6.2",
     "mysql2": "^3.20.0",
-    "nodemailer": "^6.9.0",
+    "resend": "^4.0.0",
     "stripe": "^20.4.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
-    "@types/nodemailer": "^6.4.0",
     "@types/uuid": "^9.0.0",
     "fast-check": "^4.6.0",
     "jest": "^30.3.0",

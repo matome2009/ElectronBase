@@ -1,4 +1,4 @@
-import * as nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 /**
  * メール設定（フロントエンドから渡される）
@@ -78,24 +78,23 @@ export interface NotificationSender {
 }
 
 /**
- * メール通知送信クラス（nodemailer使用）
- * SMTP設定は環境変数から取得
+ * メール通知送信クラス（Resend使用）
+ * RESEND_API_KEY / RESEND_FROM / RESEND_FROM_NAME 環境変数から設定を取得
  */
 export class EmailNotificationSender implements NotificationSender {
-  private transporter: nodemailer.Transporter;
+  private resend: Resend;
   private from: string;
 
   constructor() {
-    this.from = process.env.SMTP_FROM || 'noreply@example.com';
-    this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'localhost',
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: parseInt(process.env.SMTP_PORT || '587', 10) === 465,
-      auth: {
-        user: process.env.SMTP_USER || '',
-        pass: process.env.SMTP_PASS || '',
-      },
-    });
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) throw new Error('RESEND_API_KEY が設定されていません。');
+
+    const fromAddress = process.env.RESEND_FROM;
+    if (!fromAddress) throw new Error('RESEND_FROM が設定されていません。');
+
+    const fromName = process.env.RESEND_FROM_NAME;
+    this.from = fromName ? `${fromName} <${fromAddress}>` : fromAddress;
+    this.resend = new Resend(apiKey);
   }
 
   async send(to: string, kycLink: string, sessionName: string, emailSettings?: EmailSettings): Promise<boolean> {
@@ -131,7 +130,7 @@ export class EmailNotificationSender implements NotificationSender {
       : defaultHtml;
 
     try {
-      const mailOptions: nodemailer.SendMailOptions = {
+      const payload: Parameters<Resend['emails']['send']>[0] = {
         from: this.from,
         to,
         subject,
@@ -141,10 +140,14 @@ export class EmailNotificationSender implements NotificationSender {
 
       // Reply-To設定
       if (emailSettings?.replyToEmail) {
-        mailOptions.replyTo = emailSettings.replyToEmail;
+        payload.reply_to = emailSettings.replyToEmail;
       }
 
-      await this.transporter.sendMail(mailOptions);
+      const { error } = await this.resend.emails.send(payload);
+      if (error) {
+        console.error('Email send failed:', error);
+        return false;
+      }
       return true;
     } catch (error) {
       console.error('Email send failed:', error);
