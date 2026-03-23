@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { AmountValidator } from './AmountValidator';
-import { parseUnits, MaxUint256 } from 'ethers';
+import { parseUnits } from 'ethers';
 
 describe('AmountValidator', () => {
   describe('isValidAmount', () => {
@@ -86,7 +86,6 @@ describe('AmountValidator', () => {
 
     it('should return true for amount at boundary', () => {
       // Max uint256 in decimal
-      const maxAmount = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
       expect(AmountValidator.isWithinMaxSupply('1', 0)).toBe(true);
     });
   });

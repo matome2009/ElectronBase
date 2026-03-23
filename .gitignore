@@ -5,11 +5,15 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 
-# Electron
+# Build output
 dist/
 dist-electron/
 out/
 *.log
+
+# Tauri
+frontend/src-tauri/target/
+frontend/src-tauri/gen/
 
 # Build artifacts
 build/
@@ -80,9 +84,9 @@ bld/
 *.nuget.props
 *.nuget.targets
 
-# Electron app data
-~/Library/Application Support/web3-payroll-guardian/
-~/Library/Caches/web3-payroll-guardian/
+# Tauri app data (macOS)
+~/Library/Application Support/com.electronbase.app/
+~/Library/Caches/com.electronbase.app/
 
 # Test coverage
 coverage/

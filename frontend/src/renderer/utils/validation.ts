@@ -1,4 +1,4 @@
-import { isAddress, getAddress, keccak256, toUtf8Bytes } from 'ethers';
+import { isAddress, getAddress } from 'ethers';
 
 export const validateHttpsUrl = (url: string): { isValid: boolean; error?: string } => {
   if (!url || url.trim() === '') {

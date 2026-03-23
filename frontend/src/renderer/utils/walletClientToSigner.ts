@@ -4,7 +4,7 @@ import type { WalletClient } from 'viem';
 /**
  * wagmiのWalletClientをethersのSignerに変換
  */
-export function walletClientToSigner(walletClient: WalletClient): ethers.Signer {
+export async function walletClientToSigner(walletClient: WalletClient): Promise<ethers.Signer> {
   const { account, chain, transport } = walletClient;
   
   if (!account) {
@@ -51,5 +51,5 @@ export function walletClientToSigner(walletClient: WalletClient): ethers.Signer 
   );
 
   // Signerを作成
-  return provider.getSigner(account.address);
+  return await provider.getSigner(account.address);
 }

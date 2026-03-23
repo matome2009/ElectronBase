@@ -10,7 +10,7 @@
 
 | レイヤー | 技術 | 役割 |
 |---------|------|------|
-| デスクトップ | Electron + React + TypeScript | フロントエンド |
+| デスクトップ | Tauri (Rust) + React + TypeScript | フロントエンド |
 | 認証 | Firebase Authentication | ログイン管理 |
 | リモート DB（メイン） | TiDB（MySQL互換） | 永続データ全般 |
 | リモート DB（補助） | Firebase Realtime Database | リアルタイム同期が必要な場合のみ |
@@ -223,12 +223,18 @@ ElectronBase/
 │   ├── realtime-db-rules.json   # Realtime DB ルール（編集元）
 │   ├── realtime-db-schema.md    # Realtime DB スキーマ定義
 │   └── tidb-create.sql          # TiDB CREATE文
-├── frontend/                    # Electron アプリ（React）
+├── frontend/                    # Tauri アプリ（React + Rust）
+│   ├── src-tauri/               # Rust バックエンド（Tauri）
+│   │   ├── Cargo.toml
+│   │   ├── tauri.conf.json
+│   │   ├── capabilities/        # Tauri パーミッション設定
+│   │   └── src/
+│   │       ├── lib.rs           # Tauri コマンド（IPC ハンドラ）
+│   │       └── main.rs          # エントリポイント
 │   └── src/
-│       ├── main/                # Electron メインプロセス
-│       ├── preload/             # コンテキストブリッジ
 │       └── renderer/
 │           ├── services/        # ビジネスロジック・API呼び出し
+│           │   └── TauriService.ts  # Tauri invoke ラッパー
 │           ├── components/      # UI コンポーネント
 │           ├── types/           # 型定義
 │           └── i18n/            # 多言語対応

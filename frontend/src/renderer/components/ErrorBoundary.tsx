@@ -4,7 +4,7 @@
  * Requirements: 14.1-14.5, 19.1-19.5
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { LoggingService } from '../services/LoggingService';
 import { ErrorDialog } from './ErrorDialog';
 

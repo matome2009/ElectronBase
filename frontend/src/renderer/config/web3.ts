@@ -95,7 +95,7 @@ const chains = [
   arbitrumSepolia,
   optimismSepolia,
   bscTestnet
-] as const;
+];
 
 // Wagmi設定
 // モバイルウォレットで選択されているチェーンを優先的に使用

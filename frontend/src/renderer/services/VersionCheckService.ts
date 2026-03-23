@@ -1,4 +1,4 @@
-import { getApiUrl, DB_ROOT } from './FirebaseService';
+import { getApiUrl } from './FirebaseService';
 
 export type UpdateType = 'force' | 'notify' | 'ok';
 
