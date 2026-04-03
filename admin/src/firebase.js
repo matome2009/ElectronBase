@@ -10,5 +10,5 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const ENV = import.meta.env.VITE_ENV === 'prd' ? 'prd' : 'dev';
+export const ENV = import.meta.env.VITE_APP_ENV === 'prd' ? 'prd' : 'dev';
 export const FUNCTIONS_URL = import.meta.env.VITE_FUNCTIONS_URL;

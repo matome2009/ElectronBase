@@ -1,6 +1,6 @@
-// このファイルの名前を 'firebaseConfig.js' に変更し、
-// 自身のFirebaseプロジェクトの設定値を入力してください。
-// 'firebaseConfig.js' は .gitignore によりGitの管理対象外です。
+// 静的 website 用の参考サンプルです。
+// 実運用では編集せず、ルート .env から生成してください。
+// npm run env:sync:website
 
 export const firebaseConfig = {
   apiKey: "YOUR_API_KEY",

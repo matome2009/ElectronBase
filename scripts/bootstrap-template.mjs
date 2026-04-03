@@ -147,12 +147,14 @@ updateTextFile('firebase.json', (content) =>
   content.replace(/"region":\s*"[^"]+"/g, `"region": "${firebaseRegion}"`),
 );
 
-updateTextFile('frontend/.env.example', (content) => {
+updateTextFile('.env.example', (content) => {
   let next = content;
   next = setEnvVar(next, 'VITE_APP_NAME', appDisplayName);
   next = setEnvVar(next, 'VITE_APP_DESCRIPTION', appDescription);
   next = setEnvVar(next, 'VITE_APP_WEBSITE_URL', websiteUrl);
   next = setEnvVar(next, 'VITE_ADMIN_CONSOLE_URL', adminConsoleUrl);
+  next = setEnvVar(next, 'FIREBASE_PROJECT_ID', firebaseProjectId);
+  next = setEnvVar(next, 'FIREBASE_FUNCTIONS_REGION', firebaseRegion);
   next = setEnvVar(next, 'VITE_FIREBASE_AUTH_DOMAIN', `${firebaseProjectId}.firebaseapp.com`);
   next = setEnvVar(next, 'VITE_FIREBASE_PROJECT_ID', firebaseProjectId);
   next = setEnvVar(next, 'VITE_FIREBASE_STORAGE_BUCKET', `${firebaseProjectId}.firebasestorage.app`);
@@ -160,29 +162,13 @@ updateTextFile('frontend/.env.example', (content) => {
   next = setEnvVar(next, 'VITE_FUNCTIONS_REGION', firebaseRegion);
   next = setEnvVar(next, 'VITE_FUNCTIONS_PROJECT_ID', firebaseProjectId);
   next = setEnvVar(next, 'VITE_FUNCTIONS_URL', `https://${firebaseRegion}-${firebaseProjectId}.cloudfunctions.net`);
+  next = setEnvVar(next, 'FIREBASE_DATABASE_URL', `https://${firebaseProjectId}-default-rtdb.${firebaseDatabaseRegion}.firebasedatabase.app`);
   next = setEnvVar(next, 'VITE_WALLETCONNECT_PROJECT_ID', walletConnectProjectId);
   next = setEnvVar(next, 'VITE_ENABLE_BILLING', 'false');
   next = setEnvVar(next, 'VITE_ENABLE_WATCHED_WALLETS', 'false');
   next = setEnvVar(next, 'VITE_ENABLE_TRANSACTIONS', 'false');
   next = setEnvVar(next, 'VITE_ENABLE_CONTACTS', 'false');
   next = setEnvVar(next, 'VITE_ENABLE_LABELS', 'false');
-  return next;
-});
-
-updateTextFile('admin/.env.example', (content) => {
-  let next = content;
-  next = setEnvVar(next, 'VITE_FUNCTIONS_REGION', firebaseRegion);
-  next = setEnvVar(next, 'VITE_FUNCTIONS_PROJECT_ID', firebaseProjectId);
-  next = setEnvVar(next, 'VITE_FIREBASE_AUTH_DOMAIN', `${firebaseProjectId}.firebaseapp.com`);
-  next = setEnvVar(next, 'VITE_FIREBASE_PROJECT_ID', firebaseProjectId);
-  next = setEnvVar(next, 'VITE_FIREBASE_STORAGE_BUCKET', `${firebaseProjectId}.firebasestorage.app`);
-  next = setEnvVar(next, 'VITE_FUNCTIONS_URL', `https://${firebaseRegion}-${firebaseProjectId}.cloudfunctions.net`);
-  return next;
-});
-
-updateTextFile('functions/.env.example', (content) => {
-  let next = content;
-  next = setEnvVar(next, 'FIREBASE_DATABASE_URL', `https://${firebaseProjectId}-default-rtdb.${firebaseDatabaseRegion}.firebasedatabase.app`);
   next = setEnvVar(next, 'ENABLE_BILLING_API', 'false');
   next = setEnvVar(next, 'ENABLE_WALLET_API', 'false');
   next = setEnvVar(next, 'ENABLE_TRANSACTION_API', 'false');

@@ -7,7 +7,15 @@ set -e
 # 使い方:
 #   ./scripts/test-functions-local.sh
 
-PROJECT="token-batch-transfer"
+PROFILE="${WORKSPACE_ENV_PROFILE:-dev}"
+export WORKSPACE_ENV_PROFILE="${PROFILE}"
+PROJECT="$(node -e "const {loadWorkspaceEnv}=require('./scripts/lib/workspace-env.cjs');const env=loadWorkspaceEnv(process.argv[1], undefined, { required: false }).values;console.log(env.FIREBASE_PROJECT_ID||'token-batch-transfer');" "$PROFILE")"
+GOOGLE_CREDENTIALS_PATH="$(node scripts/resolve-google-credentials-path.mjs "$PROFILE")"
+
+if [ -n "${GOOGLE_CREDENTIALS_PATH}" ]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="${GOOGLE_CREDENTIALS_PATH}"
+  echo "🔑 Loaded Google application credentials from .env.${PROFILE}"
+fi
 
 echo "📦 Building functions..."
 (cd functions && npm install && npm run build)

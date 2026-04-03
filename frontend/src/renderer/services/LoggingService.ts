@@ -8,7 +8,7 @@ export enum LogLevel {
 }
 
 /** 本番環境では ERROR のみ出力、開発環境は全レベル出力 */
-const IS_PRODUCTION = import.meta.env.VITE_ENV === 'production' || import.meta.env.VITE_ENV === 'prd';
+const IS_PRODUCTION = import.meta.env.VITE_APP_ENV === 'prd';
 
 export interface LogEntry {
   timestamp: string;

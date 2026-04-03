@@ -49,12 +49,13 @@ firebase deploy --only database
 ```bash
 cd functions
 npm install
+npm run sync:env:dev
 npm run build
 cd ..
 firebase deploy --only functions
 ```
 
-`scripts/deploy-functions.sh` は `FIREBASE_PROJECT_ID` と `FIREBASE_FUNCTIONS_REGION` を優先して使います。
+`scripts/deploy-functions.sh` は対象に応じて `.env.dev` / `.env.prd` を使い、実行前に対応する設定から `functions/.env` を同期します。
 
 ## 4. Hosting デプロイ
 
@@ -99,6 +100,7 @@ firebase deploy --only hosting:prd
 `website/` を使う場合だけデプロイします。
 
 ```bash
+npm run env:sync:website
 firebase deploy --only hosting:website
 ```
 

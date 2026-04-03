@@ -1,5 +1,12 @@
 {
   "scripts": {
+    "env:sync:functions": "node scripts/sync-functions-env.mjs",
+    "env:sync:functions:dev": "node scripts/sync-functions-env.mjs dev",
+    "env:sync:functions:prd": "node scripts/sync-functions-env.mjs prd",
+    "env:sync:website": "node scripts/generate-website-firebase-config.mjs",
+    "env:sync:website:dev": "node scripts/generate-website-firebase-config.mjs dev",
+    "env:sync:website:prd": "node scripts/generate-website-firebase-config.mjs prd",
+    "env:resolve:gcloud-creds": "node scripts/resolve-google-credentials-path.mjs",
     "template:bootstrap": "node scripts/bootstrap-template.mjs template.config.json",
     "template:admin-user": "node scripts/generate-admin-user-sql.mjs"
   },

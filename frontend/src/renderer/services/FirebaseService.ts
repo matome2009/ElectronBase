@@ -31,8 +31,8 @@ if (missing.length > 0) {
 
 const firebaseConfig = requiredEnvVars;
 
-// dev/prd の切り替え（ビルド時に決定）
-export const DB_ROOT: 'dev' | 'prd' = import.meta.env.VITE_DB_ROOT === 'prd' ? 'prd' : 'dev';
+// dev/prd の切り替え（選ばれた .env.dev / .env.prd から自動決定）
+export const DB_ROOT: 'dev' | 'prd' = import.meta.env.VITE_APP_ENV === 'prd' ? 'prd' : 'dev';
 export const FUNCTIONS_URL: string = import.meta.env.VITE_FUNCTIONS_URL || '';
 
 /**

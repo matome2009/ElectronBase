@@ -3,16 +3,16 @@ import { getAdminConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
 
 export function getStripe(env: 'dev' | 'prd'): Stripe {
-  const suffix = env === 'prd' ? 'PRD' : 'DEV';
-  const key = process.env[`STRIPE_SECRET_KEY_${suffix}`];
-  if (!key) throw new Error(`STRIPE_SECRET_KEY_${suffix} is not set`);
+  void env;
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error('STRIPE_SECRET_KEY is not set');
   return new Stripe(key);
 }
 
 export function getStripeWebhookSecret(env: 'dev' | 'prd'): string {
-  const suffix = env === 'prd' ? 'PRD' : 'DEV';
-  const secret = process.env[`STRIPE_WEBHOOK_SECRET_${suffix}`];
-  if (!secret) throw new Error(`STRIPE_WEBHOOK_SECRET_${suffix} is not set`);
+  void env;
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) throw new Error('STRIPE_WEBHOOK_SECRET is not set');
   return secret;
 }
 

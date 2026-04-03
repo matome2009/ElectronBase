@@ -69,7 +69,7 @@ export class AlchemyService {
     pageKey?: string,
   ): Promise<AlchemyAssetTransfersResponse> {
     if (this.isMockMode()) {
-      const IS_PRODUCTION = import.meta.env.VITE_ENV === 'production' || import.meta.env.VITE_ENV === 'prd';
+      const IS_PRODUCTION = import.meta.env.VITE_APP_ENV === 'prd';
       if (IS_PRODUCTION) {
         LoggingService.error('AlchemyService: 本番環境で VITE_ALCHEMY_API_KEY が未設定です。モックデータを返します');
       } else {

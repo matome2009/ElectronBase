@@ -20,7 +20,7 @@
 1. `cp template.config.example.json template.config.json`
 2. `template.config.json` を案件用に編集
 3. `npm run template:bootstrap`
-4. `TEMPLATE.md` と `SETUP.md` を見ながら `.env` と DB を設定
+4. `TEMPLATE.md` と `SETUP.md` を見ながら `.env.dev` / `.env.prd` と DB を設定
 5. `db/core/tidb-create.sql` と `db/core/tidb-seed.sql` を適用
 6. 必要なら `db/optional/tidb-create.sql` と `db/optional/tidb-seed.sql` を適用
 7. `npm run template:admin-user -- --email admin@example.com --password change-me`
@@ -54,13 +54,20 @@ project-root/
 
 ## 環境変数
 
-それぞれの `.env.example` をコピーして使います。
+基本はリポジトリ直下の `.env.example` を `.env.dev` と `.env.prd` にコピーして使います。
 
-- `frontend/.env.example`
-- `admin/.env.example`
-- `functions/.env.example`
+```bash
+cp .env.example .env.dev
+cp .env.example .env.prd
+npm run env:sync:functions:dev
+```
 
-WalletConnect は標準搭載のままなので、`frontend/.env.example` の `VITE_WALLETCONNECT_PROJECT_ID` を設定してください。
+`frontend` と `admin` は build / dev の種類に応じて `.env.dev` または `.env.prd` を読みます。`functions/.env` は選ばれたルート env から自動生成します。
+静的 `website` を使う場合は `npm run env:sync:website:dev` または `npm run env:sync:website:prd` で `website/js/firebaseConfig.js` を生成できます。
+Google Cloud の Service Account は `GOOGLE_APPLICATION_CREDENTIALS` にパスを入れるか、`GOOGLE_APPLICATION_CREDENTIALS_JSON` / `GOOGLE_APPLICATION_CREDENTIALS_BASE64` に直接入れられます。
+Functions は `.env.dev` / `.env.prd` を切り替えて別ビルドでデプロイします。TiDB や Stripe の env 変数は `*_DEV` / `*_PRD` ではなく素の名前を使ってください。
+
+WalletConnect は標準搭載のままなので、ルート `.env.dev` / `.env.prd` の `VITE_WALLETCONNECT_PROJECT_ID` を設定してください。
 optional 機能は `VITE_ENABLE_BILLING` などの feature flag で有効化できます。Functions 側も `ENABLE_*_API` を合わせて設定してください。
 
 ## Functions API 構成

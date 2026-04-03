@@ -1,10 +1,13 @@
 {
   "name": "functions",
   "scripts": {
+    "sync:env": "node ../scripts/sync-functions-env.mjs",
+    "sync:env:dev": "node ../scripts/sync-functions-env.mjs dev",
+    "sync:env:prd": "node ../scripts/sync-functions-env.mjs prd",
     "build": "node node_modules/typescript/bin/tsc -p tsconfig.json",
     "typecheck": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
-    "serve": "npm run build && firebase emulators:start --only functions",
-    "deploy": "firebase deploy --only functions",
+    "serve": "npm run sync:env:dev && npm run build && firebase emulators:start --only functions",
+    "deploy": "npm run sync:env:prd && firebase deploy --only functions",
     "test": "jest --forceExit --detectOpenHandles"
   },
   "engines": {

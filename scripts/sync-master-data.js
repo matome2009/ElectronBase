@@ -11,6 +11,8 @@
 const admin = require('../functions/node_modules/firebase-admin');
 const path = require('path');
 const fs = require('fs');
+const { buildFirebaseAdminOptions } = require('./lib/google-credentials.cjs');
+const { normalizeEnvProfile } = require('./lib/workspace-env.cjs');
 
 // 引数解析
 const envArgIndex = process.argv.indexOf('--env');
@@ -20,21 +22,13 @@ if (!['dev', 'prd', 'both'].includes(targetEnv)) {
   process.exit(1);
 }
 
-// Firebase 初期化
-const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS ||
-  path.join(__dirname, '../frontend/service-account.json');
+process.env.WORKSPACE_ENV_PROFILE = normalizeEnvProfile(targetEnv === 'both' ? 'dev' : targetEnv);
 
-try {
-  const serviceAccount = require(serviceAccountPath);
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app',
-  });
-} catch (e) {
-  admin.initializeApp({
-    databaseURL: 'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app',
-  });
-}
+// Firebase 初期化
+const databaseURL = process.env.FIREBASE_DATABASE_URL ||
+  'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+admin.initializeApp(buildFirebaseAdminOptions({ admin, databaseURL }));
 
 // master-data-dev.json を読み込む
 const dataPath = path.join(__dirname, '../functions/master-data-dev.json');

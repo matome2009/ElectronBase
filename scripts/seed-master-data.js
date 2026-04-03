@@ -4,23 +4,15 @@
  * 実行: node scripts/seed-master-data.js
  */
 const admin = require('../functions/node_modules/firebase-admin');
-const path = require('path');
+const { buildFirebaseAdminOptions } = require('./lib/google-credentials.cjs');
+const { getWorkspaceEnvProfile } = require('./lib/workspace-env.cjs');
 
-// サービスアカウントキーのパス（環境変数 or デフォルト）
-const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS ||
-  path.join(__dirname, '../frontend/service-account.json');
+process.env.WORKSPACE_ENV_PROFILE = getWorkspaceEnvProfile(process.argv[2]);
 
-try {
-  const serviceAccount = require(serviceAccountPath);
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app',
-  });
-} catch (e) {
-  admin.initializeApp({
-    databaseURL: 'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app',
-  });
-}
+const databaseURL = process.env.FIREBASE_DATABASE_URL ||
+  'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+admin.initializeApp(buildFirebaseAdminOptions({ admin, databaseURL }));
 
 const networks = [
   // ===== MAINNETS =====

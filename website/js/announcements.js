@@ -1,5 +1,5 @@
 // お知らせ表示機能
-import { firebaseConfig } from './firebaseConfig.js';
+import { firebaseConfig, firestoreDatabaseId } from './firebaseConfig.js';
 
 (function() {
   'use strict';
@@ -15,9 +15,9 @@ import { firebaseConfig } from './firebaseConfig.js';
       
       // 名前付きデータベースを使用
       const app = firebase.app();
-      db = app.firestore('dev-firebase-store');
+      db = app.firestore(firestoreDatabaseId);
       
-      console.log('[Informations] Firebase initialized with database: dev-firebase-store');
+      console.log(`[Informations] Firebase initialized with database: ${firestoreDatabaseId}`);
     } catch (error) {
       console.error('[Informations] Firebase initialization error:', error);
       

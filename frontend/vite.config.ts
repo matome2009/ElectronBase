@@ -2,23 +2,40 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { readFileSync } from 'fs';
+import { createRequire } from 'module';
 import { buildFunctionsProxy } from './vite.functions';
 
+const require = createRequire(import.meta.url);
+const { loadWorkspaceEnv, normalizeEnvProfile } = require('../scripts/lib/workspace-env.cjs');
 const pkg = JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8'));
+const workspaceEnvDir = resolve(__dirname, '..');
 
 // @see https://tauri.app/v2/guides/getting-started/setup/vite/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, resolve(__dirname, '.'), 'VITE_');
+  const profile = normalizeEnvProfile(mode);
+  const fileEnv = loadWorkspaceEnv(profile, workspaceEnvDir, { required: false }).values;
+  const env = {
+    ...loadEnv(mode, workspaceEnvDir, 'VITE_'),
+    ...Object.fromEntries(Object.entries(fileEnv).filter(([key]) => key.startsWith('VITE_'))),
+    VITE_APP_ENV: profile,
+  };
+  const processEnvValues = Object.fromEntries(
+    Object.entries(env).map(([key, value]) => [
+      `import.meta.env.${key}`,
+      JSON.stringify(value),
+    ]),
+  );
 
   return {
     root: 'src/renderer',
-    envDir: resolve(__dirname, '.'),
+    envDir: workspaceEnvDir,
 
     // Tauri が期待する固定ポートを確保する
     clearScreen: false,
 
     define: {
       'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
+      ...processEnvValues,
     },
 
     build: {

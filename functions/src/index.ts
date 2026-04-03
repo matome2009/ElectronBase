@@ -1,3 +1,4 @@
+import './common/loadLocalEnv';
 import * as admin from 'firebase-admin';
 import * as coreExports from './modules/core';
 import * as billingExports from './modules/billing';

@@ -22,11 +22,14 @@ service-account.json
 
 # Environment variables
 .env
+.env.dev
+.env.prd
 .env.local
 .env.*.local
 .env.development
 .env.production
 functions/.env
+website/js/firebaseConfig.js
 
 # IDE
 .vscode/

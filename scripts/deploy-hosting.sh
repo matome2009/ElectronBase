@@ -10,26 +10,40 @@ set -euo pipefail
 #   ./scripts/deploy-hosting.sh admin-dev  → Admin DEV Hosting
 #   ./scripts/deploy-hosting.sh admin-prd  → Admin PRD Hosting（確認あり）
 
-PROJECT="${FIREBASE_PROJECT_ID:-${PROJECT_ID:-}}"
 TARGET="${1:-dev}"
+PROFILE="${WORKSPACE_ENV_PROFILE:-dev}"
+
+case "$TARGET" in
+  dev)        HOSTING="hosting:dev"; PROFILE="dev" ;;
+  prd)        HOSTING="hosting:prd"; PROFILE="prd" ;;
+  web)        HOSTING="hosting:website"; PROFILE="${WORKSPACE_ENV_PROFILE:-prd}" ;;
+  admin-dev)  HOSTING="hosting:admin-dev"; PROFILE="dev" ;;
+  admin-prd)  HOSTING="hosting:admin-prd"; PROFILE="prd" ;;
+  *)          echo "❌ Unknown target: $TARGET (use 'dev', 'prd', 'web', 'admin-dev', or 'admin-prd')"; exit 1 ;;
+esac
+
+export WORKSPACE_ENV_PROFILE="${PROFILE}"
+
+PROJECT="${FIREBASE_PROJECT_ID:-${PROJECT_ID:-}}"
+if [ -z "${PROJECT}" ]; then
+  PROJECT="$(node -e "const {loadWorkspaceEnv}=require('./scripts/lib/workspace-env.cjs');const env=loadWorkspaceEnv(process.argv[1]).values;console.log(env.FIREBASE_PROJECT_ID||'');" "$PROFILE")"
+fi
+
+GOOGLE_CREDENTIALS_PATH="$(node scripts/resolve-google-credentials-path.mjs "$PROFILE")"
+
+if [ -n "${GOOGLE_CREDENTIALS_PATH}" ]; then
+  export GOOGLE_APPLICATION_CREDENTIALS="${GOOGLE_CREDENTIALS_PATH}"
+  echo "🔑 Loaded Google application credentials from .env.${PROFILE}"
+fi
 
 if [ -z "${PROJECT}" ]; then
   PROJECT=$(node -e "try{console.log(require('./.firebaserc').projects.default||'')}catch(e){console.log('')}")
 fi
 
 if [ -z "${PROJECT}" ]; then
-  echo "❌ Firebase project is not configured. Set FIREBASE_PROJECT_ID or update .firebaserc."
+  echo "❌ Firebase project is not configured. Set FIREBASE_PROJECT_ID in .env.${PROFILE} or update .firebaserc."
   exit 1
 fi
-
-case "$TARGET" in
-  dev)        HOSTING="hosting:dev" ;;
-  prd)        HOSTING="hosting:prd" ;;
-  web)        HOSTING="hosting:website" ;;
-  admin-dev)  HOSTING="hosting:admin-dev" ;;
-  admin-prd)  HOSTING="hosting:admin-prd" ;;
-  *)          echo "❌ Unknown target: $TARGET (use 'dev', 'prd', 'web', 'admin-dev', or 'admin-prd')"; exit 1 ;;
-esac
 
 if [ "$TARGET" = "prd" ] || [ "$TARGET" = "web" ] || [ "$TARGET" = "admin-prd" ]; then
   read -p "⚠️  ${TARGET} Hostingをデプロイします。続行しますか？ (y/N): " confirm
@@ -48,7 +62,9 @@ elif [ "$TARGET" != "web" ]; then
   (cd frontend && npm run build:web:$TARGET)
   echo "✅ Build succeeded"
 else
-  echo "📄 Web is static, skipping build..."
+  echo "📄 Generating static website Firebase config..."
+  (npm run env:sync:website -- "$PROFILE")
+  echo "✅ Website config generated"
 fi
 
 echo ""

@@ -69,18 +69,18 @@ firebase use <your-firebase-project-id>
 ## 3. 環境変数ファイル作成
 
 ```bash
-cp frontend/.env.example frontend/.env.development
-cp frontend/.env.example frontend/.env.production
-cp admin/.env.example admin/.env.development
-cp admin/.env.example admin/.env.production
-cp functions/.env.example functions/.env
+cp .env.example .env.dev
+cp .env.example .env.prd
+npm run env:sync:functions:dev
 ```
+
+`.env.dev` と `.env.prd` をリポジトリ直下に置けば、`frontend` と `admin` は build / dev の種類に応じて自動で切り替わります。`functions/.env` は Firebase CLI 用に `npm run env:sync:functions:dev` または `npm run env:sync:functions:prd` で自動生成されます。
 
 新規案件の初回確認では、まず core-only 構成にします。optional 機能の flag は全部 `false` のままで構いません。
 
 最低限ここは設定します。
 
-### frontend
+### shared `.env.dev` / `.env.prd`
 
 - `VITE_FIREBASE_*`
 - `VITE_FUNCTIONS_REGION`
@@ -90,19 +90,14 @@ cp functions/.env.example functions/.env
 - `VITE_ADMIN_CONSOLE_URL`
 - `VITE_ENABLE_*`
 
-### admin
-
-- `VITE_FIREBASE_*`
-- `VITE_FUNCTIONS_REGION`
-- `VITE_FUNCTIONS_PROJECT_ID`
-
 ### functions
 
 - `FIREBASE_DATABASE_URL`
-- `TIDB_*`
+- `GOOGLE_APPLICATION_CREDENTIALS` または `GOOGLE_APPLICATION_CREDENTIALS_JSON` / `GOOGLE_APPLICATION_CREDENTIALS_BASE64`
+- `TIDB_HOST` `TIDB_PORT` `TIDB_USER` `TIDB_PASS` `TIDB_DB` `TIDB_DB_ADMIN`
 - `GOOGLE_CLIENT_ID_DESKTOP`
 - `GOOGLE_CLIENT_SECRET_DESKTOP`
-- `STRIPE_*`（使う場合）
+- `STRIPE_SECRET_KEY` `STRIPE_WEBHOOK_SECRET`（使う場合）
 - `ENABLE_*_API`
 
 optional API を使う場合は、frontend と functions の flag を対で揃えます。
@@ -174,6 +169,7 @@ npm run dev
 
 ```bash
 cd functions
+npm run sync:env
 npm run build
 firebase emulators:start --only functions,database
 ```

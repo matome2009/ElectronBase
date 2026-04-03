@@ -71,7 +71,7 @@ const CoreSettingsView: React.FC<CoreSettingsViewProps> = ({ onNavigateLinkAccou
           <p className="text-sm text-gray-500 mt-1">{APP_DESCRIPTION}</p>
           <div className="mt-4 space-y-4">
             <InfoRow label={t('coreSettings.version')} value={APP_VERSION} />
-            <InfoRow label={t('coreSettings.environment')} value={import.meta.env.VITE_ENV || 'development'} />
+            <InfoRow label={t('coreSettings.environment')} value={import.meta.env.VITE_APP_ENV || 'dev'} />
             <InfoRow
               label={t('coreSettings.runtime')}
               value={('__TAURI_INTERNALS__' in window || '__TAURI__' in window) ? t('coreSettings.desktop') : t('coreSettings.web')}

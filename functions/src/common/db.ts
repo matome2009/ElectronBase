@@ -1,35 +1,35 @@
 import mysql from 'mysql2/promise';
 
-function getConfig(env: 'dev' | 'prd') {
-  const suffix = env === 'prd' ? 'PRD' : 'DEV';
+function getConfig() {
   return {
-    host:     process.env[`TIDB_HOST_${suffix}`]!,
-    port:     parseInt(process.env[`TIDB_PORT_${suffix}`] || '4000'),
-    user:     process.env[`TIDB_USER_${suffix}`]!,
-    password: process.env[`TIDB_PASS_${suffix}`]!,
-    database: process.env[`TIDB_DB_${suffix}`]!,   // dev / prd (user_t, login_t)
+    host:     process.env.TIDB_HOST!,
+    port:     parseInt(process.env.TIDB_PORT || '4000'),
+    user:     process.env.TIDB_USER!,
+    password: process.env.TIDB_PASS!,
+    database: process.env.TIDB_DB!,   // .env.dev /.env.prd ごとに切り替わる
     ssl: { rejectUnauthorized: true },
   };
 }
 
-function getAdminConfig(env: 'dev' | 'prd') {
-  const suffix = env === 'prd' ? 'PRD' : 'DEV';
+function getAdminConfig() {
   return {
-    host:     process.env[`TIDB_HOST_${suffix}`]!,
-    port:     parseInt(process.env[`TIDB_PORT_${suffix}`] || '4000'),
-    user:     process.env[`TIDB_USER_${suffix}`]!,
-    password: process.env[`TIDB_PASS_${suffix}`]!,
-    database: process.env[`TIDB_DB_ADMIN_${suffix}`]!,  // dev_admin / prd_admin
+    host:     process.env.TIDB_HOST!,
+    port:     parseInt(process.env.TIDB_PORT || '4000'),
+    user:     process.env.TIDB_USER!,
+    password: process.env.TIDB_PASS!,
+    database: process.env.TIDB_DB_ADMIN!,  // .env.dev /.env.prd ごとに切り替わる
     ssl: { rejectUnauthorized: true },
   };
 }
 
 export async function getConnection(env: 'dev' | 'prd') {
-  return mysql.createConnection(getConfig(env));
+  void env;
+  return mysql.createConnection(getConfig());
 }
 
 export async function getAdminConnection(env: 'dev' | 'prd') {
-  return mysql.createConnection(getAdminConfig(env));
+  void env;
+  return mysql.createConnection(getAdminConfig());
 }
 
 export async function initTable(env: 'dev' | 'prd') {

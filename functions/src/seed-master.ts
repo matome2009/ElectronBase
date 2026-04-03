@@ -8,33 +8,23 @@
  */
 
 import * as admin from 'firebase-admin';
-import { execSync } from 'child_process';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { buildFirebaseAdminOptions } = require('../../scripts/lib/google-credentials.cjs');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { normalizeEnvProfile } = require('../../scripts/lib/workspace-env.cjs');
 
-const DB_URL = 'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
-
+const dbRootArg = process.argv[2];
+process.env.WORKSPACE_ENV_PROFILE = normalizeEnvProfile(dbRootArg);
 const keyArg = process.argv.find(a => a.startsWith('--key='));
-const keyPath = keyArg ? keyArg.split('=')[1] : process.env.GOOGLE_APPLICATION_CREDENTIALS;
+if (keyArg) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = keyArg.split('=')[1];
+}
+
+const DB_URL = process.env.FIREBASE_DATABASE_URL ||
+  'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 if (!admin.apps.length) {
-  if (keyPath) {
-    const serviceAccount = require(keyPath.startsWith('/') ? keyPath : require('path').resolve(process.cwd(), keyPath));
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      databaseURL: DB_URL,
-    });
-  } else {
-    // Firebase CLI のアクセストークンを使用
-    try {
-      const tokenJson = execSync('npx firebase login:ci --no-localhost 2>/dev/null || echo ""', { encoding: 'utf-8' }).trim();
-      // Application Default Credentials を試す前に、refreshToken 方式を試す
-    } catch { /* ignore */ }
-    // google-application-default を使う
-    const { applicationDefault } = require('google-auth-library');
-    admin.initializeApp({
-      credential: admin.credential.applicationDefault(),
-      databaseURL: DB_URL,
-    });
-  }
+  admin.initializeApp(buildFirebaseAdminOptions({ admin, databaseURL: DB_URL }));
 }
 
 const CONTRACT_ADDRESS = '0xDDACf7FF47e19b533ecd24876e582d48014f7456';
