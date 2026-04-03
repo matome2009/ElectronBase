@@ -1,6 +1,15 @@
 # 運用手順書
 
-初回セットアップは [SETUP.md](./SETUP.md) を参照してください。ここでは日常運用で使う操作だけをまとめています。
+このドキュメントは、初回セットアップ完了後の日常運用で使う操作をまとめたものです。
+新規案件の立ち上げ、env 作成、TiDB 初期化、初回管理者作成は [SETUP.md](./SETUP.md) を先に実施してください。
+
+## 0. このドキュメントの前提
+
+- `template:bootstrap` が完了している
+- Firebase project と env 設定が完了している
+- `db/core/tidb-create.sql` と `db/core/tidb-seed.sql` の適用が終わっている
+- 初回管理者アカウントの作成が終わっている
+- `frontend` `admin` `functions` がローカル起動できている
 
 ## 1. Firebase / GCP
 
@@ -95,12 +104,9 @@ firebase deploy --only hosting:website
 
 ## 5. TiDB 運用
 
-### 初期化
+### 初期化について
 
-- USER DB に `db/core/tidb-create.sql`
-- ADMIN DB に `db/core/tidb-create.sql`
-- ADMIN DB に `db/core/tidb-seed.sql`
-- optional 機能を使う場合だけ `db/optional/tidb-create.sql` と `db/optional/tidb-seed.sql`
+初回の schema / seed 適用は [SETUP.md](./SETUP.md) の「4. TiDB 初期化」を参照してください。ここでは運用中の管理者追加と管理 DB の用途だけを扱います。
 
 ### 管理者追加・再発行
 
