@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "template:bootstrap": "node scripts/bootstrap-template.mjs template.config.json",
+    "template:admin-user": "node scripts/generate-admin-user-sql.mjs"
+  },
+  "dependencies": {
+    "firebase": "^12.11.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.12.0"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "rules": {
+
+    "dev": {
+      "usedNonces": {
+        ".indexOn": [".value"]
+      },
+      "master": {
+        ".read": "auth != null",
+        ".write": false
+      },
+      "users": {
+        "$uid": {
+          ".read":  "$uid === auth.uid",
+          ".write": "$uid === auth.uid",
+          "billing": {
+            ".indexOn": ["stripeCustomerId"]
+          },
+          "points": {
+            ".indexOn": ["createdAt", "type"]
+          }
+        }
+      }
+    },
+
+    "prd": {
+      "usedNonces": {
+        ".indexOn": [".value"]
+      },
+      "master": {
+        ".read": "auth != null",
+        ".write": false
+      },
+      "users": {
+        "$uid": {
+          ".read":  "$uid === auth.uid",
+          ".write": "$uid === auth.uid",
+          "billing": {
+            ".indexOn": ["stripeCustomerId"]
+          },
+          "points": {
+            ".indexOn": ["createdAt", "type"]
+          }
+        }
+      }
+    }
+
+  }
+}

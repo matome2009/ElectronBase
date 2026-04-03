@@ -1,0 +1,76 @@
+name: desktop-app-template
+base: core24
+version: "1.0.0"
+summary: Desktop App Template desktop application
+description: |
+  WEB3 Transaction Viewer is a desktop application for viewing
+  Web3 ERC20 token transactions easily.
+grade: stable
+confinement: strict
+
+platforms:
+  amd64:
+
+apps:
+  desktop-app-template:
+    command: bin/launcher
+    desktop: usr/share/applications/desktop-app-template.desktop
+    extensions: [gnome]
+    environment:
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libproxy${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    plugs:
+      - network
+      - network-bind
+      - network-status
+      - home
+      - opengl
+      - audio-playback
+      - browser-support
+      - password-manager-service
+      - hardware-observe
+      - system-observe
+
+parts:
+  desktop_app_template:
+    plugin: dump
+    source: target/x86_64-unknown-linux-gnu/release/bundle/deb/DesktopAppTemplate_1.0.0_amd64.deb
+    source-type: deb
+    stage-packages:
+      - glib-networking
+      - libproxy1v5
+      - libdrm-common
+    override-prime: |
+      craftctl default
+      rm -f $SNAPCRAFT_PRIME/usr/share/applications/DesktopAppTemplate.desktop
+
+  launcher:
+    plugin: nil
+    override-build: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cat > $SNAPCRAFT_PART_INSTALL/bin/launcher << 'EOF'
+      #!/bin/sh
+      # Unset SNAP so GLib does not use the D-Bus portal for network monitoring.
+      # With SNAP set, GLib falls back to the portal backend, which returns
+      # NotAllowed inside the snap sandbox, causing navigator.onLine = false.
+      SNAP_DIR="$SNAP"
+      unset SNAP
+      export WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS=1
+      export WEBKIT_DISABLE_DMABUF_RENDERER=1
+      export WEBKIT_DMABUF_RENDERER_FORCE_SHM=1
+      export WEBKIT_DISABLE_MEMORY_PRESSURE_MONITOR=1
+      exec "$SNAP_DIR/usr/bin/desktop_app_template" "$@"
+      EOF
+      chmod +x $SNAPCRAFT_PART_INSTALL/bin/launcher
+
+  desktop-file:
+    plugin: nil
+    override-build: |
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      cat > $SNAPCRAFT_PART_INSTALL/usr/share/applications/desktop-app-template.desktop << 'EOF'
+      [Desktop Entry]
+      Name=Desktop App Template
+      Exec=desktop-app-template
+      Icon=${SNAP}/usr/share/icons/hicolor/128x128/apps/desktop_app_template.png
+      Type=Application
+      Categories=Finance;
+      EOF

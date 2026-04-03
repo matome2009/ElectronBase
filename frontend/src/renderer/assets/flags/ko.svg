@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 18 12">
+  <rect width="18" height="12" fill="#fff"/>
+  
+  <circle r="3" cx="9" cy="6" fill="#cd2e3a"/>
+  <path d="M6 6a3 3 0 0 0 6 0 1.5 1.5 0 0 1-3 0 1.5 1.5 0 0 0-3 0" fill="#0047a0"/>
+  
+  <g id="sake" fill="#000" transform="translate(9,6)">
+    <g transform="rotate(-56.31) translate(-7.5,0)">
+      <rect width="0.5" height="4" x="-0.25" y="-2"/>
+      <rect width="0.5" height="4" x="0.35" y="-2"/>
+      <rect width="0.5" height="4" x="0.95" y="-2"/>
+    </g>
+    <g transform="rotate(123.69) translate(-7.5,0)">
+      <rect width="0.5" height="1.9" x="-0.25" y="-2"/>
+      <rect width="0.5" height="1.9" x="-0.25" y="0.1"/>
+      <rect width="0.5" height="1.9" x="0.35" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.35" y="0.1"/>
+      <rect width="0.5" height="1.9" x="0.95" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.95" y="0.1"/>
+    </g>
+    <g transform="rotate(56.31) translate(-7.5,0)">
+      <rect width="0.5" height="4" x="-0.25" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.35" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.35" y="0.1"/>
+      <rect width="0.5" height="4" x="0.95" y="-2"/>
+    </g>
+    <g transform="rotate(-123.69) translate(-7.5,0)">
+      <rect width="0.5" height="1.9" x="-0.25" y="-2"/>
+      <rect width="0.5" height="1.9" x="-0.25" y="0.1"/>
+      <rect width="0.5" height="4" x="0.35" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.95" y="-2"/>
+      <rect width="0.5" height="1.9" x="0.95" y="0.1"/>
+    </g>
+  </g>
+</svg>

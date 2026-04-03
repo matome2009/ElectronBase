@@ -1,0 +1,171 @@
+import * as functions from 'firebase-functions';
+import { Resend } from 'resend';
+
+/**
+ * メール設定（フロントエンドから渡される）
+ */
+export interface EmailSettings {
+  emailSubject?: string;
+  emailBody?: string;
+  expiresInDays?: number;
+  replyToEmail?: string;
+  language?: string;
+}
+
+// Default email templates per language
+const DEFAULT_SUBJECTS: Record<string, string> = {
+  ja: 'KYC本人確認のお願い - ',
+  en: 'KYC Verification Request - ',
+  ko: 'KYC 본인확인 요청 - ',
+  zh: 'KYC身份验证请求 - ',
+};
+
+const DEFAULT_BODIES: Record<string, (sessionName: string, kycLink: string, expiresInDays: number) => string> = {
+  ja: (s, l, d) => [
+    `${s} の支払いを受け取るために、本人確認（KYC）を完了してください。`,
+    '', '以下のリンクからKYCフォームにアクセスし、MetaMaskでウォレット所有権を証明してください。',
+    '', l, '', `このリンクの有効期限は${d}日間です。`,
+  ].join('\n'),
+  en: (s, l, d) => [
+    `To receive payment from ${s}, please complete identity verification (KYC).`,
+    '', 'Access the KYC form from the link below and verify wallet ownership with MetaMask.',
+    '', l, '', `This link expires in ${d} days.`,
+  ].join('\n'),
+  ko: (s, l, d) => [
+    `${s}의 결제를 받으려면 본인확인(KYC)을 완료해주세요.`,
+    '', '아래 링크에서 KYC 양식에 접속하여 MetaMask로 지갑 소유권을 증명해주세요.',
+    '', l, '', `이 링크의 유효기간은 ${d}일입니다.`,
+  ].join('\n'),
+  zh: (s, l, d) => [
+    `为了接收${s}的付款，请完成身份验证（KYC）。`,
+    '', '请通过以下链接访问KYC表单，使用MetaMask验证钱包所有权。',
+    '', l, '', `此链接有效期为${d}天。`,
+  ].join('\n'),
+};
+
+const DEFAULT_HTML_BODIES: Record<string, (sessionName: string, kycLink: string, expiresInDays: number) => string> = {
+  ja: (s, l, d) => [
+    `<p>${s} の支払いを受け取るために、本人確認（KYC）を完了してください。</p>`,
+    '<p>以下のリンクからKYCフォームにアクセスし、MetaMaskでウォレット所有権を証明してください。</p>',
+    `<p><a href="${l}">${l}</a></p>`,
+    `<p>このリンクの有効期限は${d}日間です。</p>`,
+  ].join('\n'),
+  en: (s, l, d) => [
+    `<p>To receive payment from ${s}, please complete identity verification (KYC).</p>`,
+    '<p>Access the KYC form from the link below and verify wallet ownership with MetaMask.</p>',
+    `<p><a href="${l}">${l}</a></p>`,
+    `<p>This link expires in ${d} days.</p>`,
+  ].join('\n'),
+  ko: (s, l, d) => [
+    `<p>${s}의 결제를 받으려면 본인확인(KYC)을 완료해주세요.</p>`,
+    '<p>아래 링크에서 KYC 양식에 접속하여 MetaMask로 지갑 소유권을 증명해주세요.</p>',
+    `<p><a href="${l}">${l}</a></p>`,
+    `<p>이 링크의 유효기간은 ${d}일입니다.</p>`,
+  ].join('\n'),
+  zh: (s, l, d) => [
+    `<p>为了接收${s}的付款，请完成身份验证（KYC）。</p>`,
+    '<p>请通过以下链接访问KYC表单，使用MetaMask验证钱包所有权。</p>',
+    `<p><a href="${l}">${l}</a></p>`,
+    `<p>此链接有效期为${d}天。</p>`,
+  ].join('\n'),
+};
+
+/**
+ * 通知送信のStrategy Patternインターフェース
+ * 将来的にSMS・Slack等に拡張可能
+ */
+export interface NotificationSender {
+  send(to: string, kycLink: string, sessionName: string, emailSettings?: EmailSettings): Promise<boolean>;
+}
+
+/**
+ * メール通知送信クラス（Resend使用）
+ * RESEND_API_KEY / RESEND_FROM / RESEND_FROM_NAME 環境変数から設定を取得
+ */
+export class EmailNotificationSender implements NotificationSender {
+  private resend: Resend;
+  private from: string;
+
+  constructor() {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) throw new Error('RESEND_API_KEY が設定されていません。');
+
+    const fromAddress = process.env.RESEND_FROM;
+    if (!fromAddress) throw new Error('RESEND_FROM が設定されていません。');
+
+    const fromName = process.env.RESEND_FROM_NAME;
+    this.from = fromName ? `${fromName} <${fromAddress}>` : fromAddress;
+    this.resend = new Resend(apiKey);
+  }
+
+  async send(to: string, kycLink: string, sessionName: string, emailSettings?: EmailSettings): Promise<boolean> {
+    const expiresInDays = emailSettings?.expiresInDays ?? 7;
+    const lang = emailSettings?.language || 'ja';
+
+    // 件名の組み立て
+    const subject = emailSettings?.emailSubject
+      ? emailSettings.emailSubject.replace(/\{sessionName\}/g, sessionName)
+      : (DEFAULT_SUBJECTS[lang] || DEFAULT_SUBJECTS['ja']) + sessionName;
+
+    // 本文の組み立て
+    const getDefaultBody = DEFAULT_BODIES[lang] || DEFAULT_BODIES['ja'];
+    const defaultBody = getDefaultBody(sessionName, kycLink, expiresInDays);
+
+    const textBody = emailSettings?.emailBody
+      ? emailSettings.emailBody
+          .replace(/\{sessionName\}/g, sessionName)
+          .replace(/\{kycLink\}/g, kycLink)
+          .replace(/\{expiresInDays\}/g, String(expiresInDays))
+      : defaultBody;
+
+    // HTML本文の組み立て
+    const getDefaultHtml = DEFAULT_HTML_BODIES[lang] || DEFAULT_HTML_BODIES['ja'];
+    const defaultHtml = getDefaultHtml(sessionName, kycLink, expiresInDays);
+
+    const htmlBody = emailSettings?.emailBody
+      ? emailSettings.emailBody
+          .replace(/\{sessionName\}/g, sessionName)
+          .replace(/\{kycLink\}/g, `<a href="${kycLink}">${kycLink}</a>`)
+          .replace(/\{expiresInDays\}/g, String(expiresInDays))
+          .replace(/\n/g, '<br>')
+      : defaultHtml;
+
+    try {
+      const payload: Parameters<Resend['emails']['send']>[0] = {
+        from: this.from,
+        to,
+        subject,
+        text: textBody,
+        html: htmlBody,
+      };
+
+      // Reply-To設定
+      if (emailSettings?.replyToEmail) {
+        payload.replyTo = emailSettings.replyToEmail;
+      }
+
+      const { error } = await this.resend.emails.send(payload);
+      if (error) {
+        functions.logger.error('Email send failed:', error);
+        return false;
+      }
+      return true;
+    } catch (error) {
+      functions.logger.error('Email send failed:', error);
+      return false;
+    }
+  }
+}
+
+/**
+ * 通知タイプに応じたNotificationSenderを返すファクトリ関数
+ * 現在はemailのみ対応。将来的にsms/slackを追加可能。
+ */
+export function getNotificationSender(type: string): NotificationSender {
+  switch (type) {
+    case 'email':
+      return new EmailNotificationSender();
+    default:
+      throw new Error(`Unsupported notification type: ${type}`);
+  }
+}

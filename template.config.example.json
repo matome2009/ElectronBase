@@ -1,0 +1,15 @@
+{
+  "appDisplayName": "My Desktop App",
+  "productName": "MyDesktopApp",
+  "npmPackageName": "my-desktop-app",
+  "rustPackageName": "my_desktop_app",
+  "bundleIdentifier": "com.example.mydesktopapp",
+  "appDescription": "Desktop application starter with Tauri, Firebase Functions, TiDB, and admin console.",
+  "websiteUrl": "https://example.com",
+  "adminConsoleUrl": "https://example.com/admin",
+  "supportEmail": "dev@example.com",
+  "firebaseProjectId": "my-firebase-project",
+  "firebaseRegion": "asia-northeast1",
+  "firebaseDatabaseRegion": "asia-southeast1",
+  "walletConnectProjectId": "your_walletconnect_project_id"
+}

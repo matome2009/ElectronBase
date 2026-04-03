@@ -1,24 +1,24 @@
 {
   "projects": {
-    "default": "token-batch-transfer"
+    "default": "template-firebase-project"
   },
   "targets": {
-    "token-batch-transfer": {
+    "template-firebase-project": {
       "hosting": {
         "dev": [
-          "token-batch-transfer-dev"
+          "template-firebase-project-dev"
         ],
         "prd": [
-          "token-batch-transfer-prd"
+          "template-firebase-project-prd"
         ],
         "admin-dev": [
-          "token-batch-transfer-dev-admin"
+          "template-firebase-project-dev-admin"
         ],
         "admin-prd": [
-          "token-batch-transfer-prd-admin"
+          "template-firebase-project-prd-admin"
         ],
         "website": [
-          "token-batch-transfer"
+          "template-firebase-project"
         ]
       }
     }

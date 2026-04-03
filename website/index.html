@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="site.title">Web3 Transaction View - ERC20トークン受信管理</title>
+  <meta name="description" content="ERC20トークンの受信トランザクションをインボックス形式で一元管理するデスクトップアプリ。複数ウォレット監視、ラベル管理、コンタクト管理、マルチネットワーク対応。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <h1>⛓️ Web3 Transaction View</h1>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#features" data-i18n="nav.features">機能</a></li>
+          <li><a href="#how-to-use" data-i18n="nav.howToUse">使い方</a></li>
+          <li><a href="#networks" data-i18n="nav.networks">対応ネットワーク</a></li>
+          <li><a href="help.html" data-i18n="nav.help">ヘルプ</a></li>
+          <li><a href="download.html" class="btn-primary" data-i18n="nav.download">ダウンロード</a></li>
+          <li class="lang-switcher">
+            <button class="lang-btn active" data-lang="ja">🇯🇵</button>
+            <button class="lang-btn" data-lang="en">🇺🇸</button>
+            <button class="lang-btn" data-lang="ko">🇰🇷</button>
+            <button class="lang-btn" data-lang="zh">🇨🇳</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ヒーローセクション -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h2 data-i18n="hero.title">ERC20トークンの受信を<br>インボックスで一元管理</h2>
+          <p data-i18n="hero.subtitle">複数ウォレットへの受信トランザクションをリアルタイムで把握。<br>ラベル・フラグ・コンタクト管理で受信履歴をスマートに整理できます。</p>
+          <div class="hero-buttons">
+            <a href="download.html" class="btn-large btn-primary" data-i18n="hero.download">無料ダウンロード</a>
+            <a href="#features" class="btn-large btn-secondary" data-i18n="hero.features">機能を見る</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 対応ネットワークセクション -->
+    <section id="networks" class="pricing" style="display: block;">
+      <div class="container">
+        <h2 class="section-title" data-i18n="networks.title">対応ネットワーク</h2>
+        <div class="feature-grid" style="max-width: 900px; margin: 0 auto;">
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3 data-i18n="networks.mainnet">メインネット</h3>
+            <ul class="features-list" style="text-align: left;">
+              <li>✓ Ethereum Mainnet (Chain ID: 1)</li>
+              <li>✓ Polygon (Chain ID: 137)</li>
+              <li>✓ Arbitrum One (Chain ID: 42161)</li>
+              <li>✓ Optimism (Chain ID: 10)</li>
+              <li>✓ BSC (Binance Smart Chain) (Chain ID: 56)</li>
+              <li>✓ Base (Chain ID: 8453)</li>
+              <li>✓ Linea (Chain ID: 59144)</li>
+              <li>✓ Sei (Chain ID: 1329)</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🧪</div>
+            <h3 data-i18n="networks.testnet">テストネット</h3>
+            <ul class="features-list" style="text-align: left;">
+              <li>✓ Ethereum Sepolia (Chain ID: 11155111)</li>
+              <li>✓ Polygon Amoy (Chain ID: 80002)</li>
+              <li>✓ Arbitrum Sepolia (Chain ID: 421614)</li>
+              <li>✓ Optimism Sepolia (Chain ID: 11155420)</li>
+              <li>✓ BSC Testnet (Chain ID: 97)</li>
+              <li>✓ Base Sepolia (Chain ID: 84532)</li>
+              <li>✓ Linea Sepolia (Chain ID: 59141)</li>
+              <li>✓ Sei Testnet (Chain ID: 1328)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- スクリーンショットスライダー -->
+    <section class="screenshots-slider">
+      <div class="container">
+        <div class="slider-container">
+          <div class="slider-wrapper" id="sliderWrapper"></div>
+          <button class="slider-btn prev" id="sliderPrev">‹</button>
+          <button class="slider-btn next" id="sliderNext">›</button>
+          <div class="slider-dots" id="sliderDots"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 機能セクション -->
+    <section id="features" class="features">
+      <div class="container">
+        <h2 class="section-title" data-i18n="features.title">主な機能</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📥</div>
+            <h3 data-i18n="features.inbox.title">インボックス</h3>
+            <p data-i18n="features.inbox.desc">受信したERC20トランザクションをインボックス形式で一覧表示。ネットワーク・トークン・既読状態でフィルタリングでき、ページネーションでさらに読み込めます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">👛</div>
+            <h3 data-i18n="features.wallet.title">複数ウォレット監視</h3>
+            <p data-i18n="features.wallet.desc">複数のウォレットアドレスを登録して、ERC20受信トランザクションを複数ネットワークにわたって同時に監視できます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏷️</div>
+            <h3 data-i18n="features.label.title">ラベル管理</h3>
+            <p data-i18n="features.label.desc">色付きラベルを作成してトランザクションに付与。受信内容をカテゴリ別に分類・整理できます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📒</div>
+            <h3 data-i18n="features.contact.title">コンタクト管理</h3>
+            <p data-i18n="features.contact.desc">送信元アドレスに名前を付けてコンタクト登録。インボックスでは登録済み送信者が名前で表示されます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✅</div>
+            <h3 data-i18n="features.readStatus.title">既読/未読管理</h3>
+            <p data-i18n="features.readStatus.desc">トランザクションの既読・未読を管理。重要なトランザクションにはフラグを立てて見逃しを防止できます。</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌐</div>
+            <h3 data-i18n="features.multiNetwork.title">マルチネットワーク</h3>
+            <p data-i18n="features.multiNetwork.desc">Ethereum・Polygon・Arbitrum One・Optimism・BSCのメインネット・テストネットに対応。ウォレットごとに監視するチェーンを設定できます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 使い方セクション -->
+    <section id="how-to-use" class="how-to-use">
+      <div class="container">
+        <h2 class="section-title" data-i18n="howToUse.title">このシステムの使い方</h2>
+        <p class="section-subtitle" data-i18n="howToUse.subtitle">6ステップでERC20トークン受信の管理を始められます</p>
+        <div class="how-steps-grid">
+          <div class="how-step-card">
+            <div class="how-step-number">1</div>
+            <div class="how-step-icon" data-i18n="howToUse.step1.icon">📥</div>
+            <h3 data-i18n="howToUse.step1.title">ダウンロード＆インストール</h3>
+            <p data-i18n="howToUse.step1.desc">ダウンロードページからアプリをダウンロードし、インストールします。Windows・macOS・Linuxに対応。</p>
+          </div>
+          <div class="how-step-card">
+            <div class="how-step-number">2</div>
+            <div class="how-step-icon" data-i18n="howToUse.step2.icon">🔑</div>
+            <h3 data-i18n="howToUse.step2.title">ログイン</h3>
+            <p data-i18n="howToUse.step2.desc">WalletConnectまたはGoogleアカウントでログイン。初回ログイン時にアカウントが自動作成されます。</p>
+          </div>
+          <div class="how-step-card">
+            <div class="how-step-number">3</div>
+            <div class="how-step-icon" data-i18n="howToUse.step3.icon">👛</div>
+            <h3 data-i18n="howToUse.step3.title">監視ウォレットを登録</h3>
+            <p data-i18n="howToUse.step3.desc">インボックスタブから「＋ウォレット追加」で監視したいウォレットアドレスを登録します。</p>
+          </div>
+          <div class="how-step-card">
+            <div class="how-step-number">4</div>
+            <div class="how-step-icon" data-i18n="howToUse.step4.icon">📬</div>
+            <h3 data-i18n="howToUse.step4.title">インボックスで受信確認</h3>
+            <p data-i18n="howToUse.step4.desc">登録ウォレットへのERC20受信トランザクションがインボックスに表示されます。ネットワーク・トークンでフィルタリングできます。</p>
+          </div>
+          <div class="how-step-card">
+            <div class="how-step-number">5</div>
+            <div class="how-step-icon" data-i18n="howToUse.step5.icon">🏷️</div>
+            <h3 data-i18n="howToUse.step5.title">ラベル・フラグで整理</h3>
+            <p data-i18n="howToUse.step5.desc">色付きラベルを付けたり、重要なトランザクションにフラグを立てて整理します。既読/未読の管理も可能です。</p>
+          </div>
+          <div class="how-step-card">
+            <div class="how-step-number">6</div>
+            <div class="how-step-icon" data-i18n="howToUse.step6.icon">📒</div>
+            <h3 data-i18n="howToUse.step6.title">コンタクト・設定で管理</h3>
+            <p data-i18n="howToUse.step6.desc">送信元アドレスをコンタクト登録して名前管理。設定タブでウォレットごとの監視ネットワークやプランを調整できます。</p>
+          </div>
+        </div>
+        <div class="how-to-use-note">
+          <p data-i18n="howToUse.note">💡 設定タブからウォレットごとに監視するチェーンのオン/オフを切り替えられます。テストネットも有効化して動作確認できます。</p>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="help.html" class="btn-secondary btn-medium" data-i18n="howToUse.learnMore">詳細な使い方を見る</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTAセクション -->
+    <section class="cta">
+      <div class="container">
+        <h2 data-i18n="cta.title">今すぐ始めましょう</h2>
+        <p data-i18n="cta.subtitle">無料でダウンロードして、ERC20トークンの受信管理をインボックスで始めましょう。</p>
+        <a href="download.html" class="btn-large btn-primary" data-i18n="hero.download">無料ダウンロード</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>⛓️ Web3 Transaction View</h4>
+          <p data-i18n="footer.description">ERC20トークンの受信トランザクションをインボックス形式で一元管理するデスクトップアプリ</p>
+        </div>
+        <div class="footer-section">
+          <h4 data-i18n="footer.links">リンク</h4>
+          <ul>
+            <li><a href="download.html" data-i18n="nav.download">ダウンロード</a></li>
+            <li><a href="help.html" data-i18n="nav.help">ヘルプ</a></li>
+            <li><a href="#features" data-i18n="nav.features">機能</a></li>
+            <li><a href="#networks" data-i18n="nav.networks">対応ネットワーク</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 data-i18n="footer.support">サポート</h4>
+          <ul>
+            <li><a href="help.html" data-i18n="footer.guide">使い方ガイド</a></li>
+            <li><a href="help.html#faq" data-i18n="footer.faq">よくある質問</a></li>
+            <li><a href="privacy-policy.html" data-i18n="footer.privacy">プライバシーポリシー</a></li>
+            <li><a href="mailto:matome2009.develop+tokenbatchtransfer@gmail.com" data-i18n="footer.contact">お問い合わせ</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 <span data-i18n="footer.copyright">Web3 Transaction View. All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>
+  <script src="js/i18n.js"></script>
+  <script src="js/slider.js"></script>
+</body>
+</html>

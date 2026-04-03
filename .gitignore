@@ -5,7 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 
-# Electron
+# Desktop bundles
 dist/
 dist-electron/
 out/
@@ -79,10 +79,6 @@ bld/
 !**/packages/build/
 *.nuget.props
 *.nuget.targets
-
-# Electron app data
-~/Library/Application Support/web3-payroll-guardian/
-~/Library/Caches/web3-payroll-guardian/
 
 # Test coverage
 coverage/
