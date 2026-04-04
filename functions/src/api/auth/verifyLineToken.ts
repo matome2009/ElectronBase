@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { findOrCreateUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser, LINE_CHANNEL_ID } from './_helpers';
 
@@ -57,5 +57,5 @@ async function handleVerifyLineToken(
   res.json({ customToken, userId: uid });
 }
 
-export const verifyLineTokenDev = functions.region(REGION).https.onRequest((req, res) => handleVerifyLineToken(req, res, 'dev'));
-export const verifyLineTokenPrd = functions.region(REGION).https.onRequest((req, res) => handleVerifyLineToken(req, res, 'prd'));
+export const verifyLineTokenDev = regionalFunctions.https.onRequest((req, res) => handleVerifyLineToken(req, res, 'dev'));
+export const verifyLineTokenPrd = regionalFunctions.https.onRequest((req, res) => handleVerifyLineToken(req, res, 'prd'));

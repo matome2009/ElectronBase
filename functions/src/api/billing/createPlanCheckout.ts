@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { getActivePlan } from '../../common/planLimits';
@@ -102,5 +102,5 @@ async function handleCreatePlanCheckout(
   }
 }
 
-export const createPlanCheckoutDev = functions.region(REGION).https.onRequest((req, res) => handleCreatePlanCheckout(req, res, 'dev'));
-export const createPlanCheckoutPrd = functions.region(REGION).https.onRequest((req, res) => handleCreatePlanCheckout(req, res, 'prd'));
+export const createPlanCheckoutDev = regionalFunctions.https.onRequest((req, res) => handleCreatePlanCheckout(req, res, 'dev'));
+export const createPlanCheckoutPrd = regionalFunctions.https.onRequest((req, res) => handleCreatePlanCheckout(req, res, 'prd'));

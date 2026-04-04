@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { findOrCreateUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser } from './_helpers';
 
@@ -87,5 +87,5 @@ async function handleExchangeGoogleAuthCode(
   res.json({ customToken, userId: uid });
 }
 
-export const exchangeGoogleAuthCodeDev = functions.region(REGION).https.onRequest((req, res) => handleExchangeGoogleAuthCode(req, res, 'dev'));
-export const exchangeGoogleAuthCodePrd = functions.region(REGION).https.onRequest((req, res) => handleExchangeGoogleAuthCode(req, res, 'prd'));
+export const exchangeGoogleAuthCodeDev = regionalFunctions.https.onRequest((req, res) => handleExchangeGoogleAuthCode(req, res, 'dev'));
+export const exchangeGoogleAuthCodePrd = regionalFunctions.https.onRequest((req, res) => handleExchangeGoogleAuthCode(req, res, 'prd'));

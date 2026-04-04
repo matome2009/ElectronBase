@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
@@ -116,5 +116,5 @@ async function handleRemoveLabel(
   }
 }
 
-export const removeLabelDev = functions.region(REGION).https.onRequest((req, res) => handleRemoveLabel(req, res, 'dev'));
-export const removeLabelPrd = functions.region(REGION).https.onRequest((req, res) => handleRemoveLabel(req, res, 'prd'));
+export const removeLabelDev = regionalFunctions.https.onRequest((req, res) => handleRemoveLabel(req, res, 'dev'));
+export const removeLabelPrd = regionalFunctions.https.onRequest((req, res) => handleRemoveLabel(req, res, 'prd'));

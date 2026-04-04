@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { getActivePlan, PLAN_LIMITS } from '../../common/planLimits';
@@ -77,5 +77,5 @@ async function handleToggleWatchedWallet(
   }
 }
 
-export const toggleWatchedWalletDev = functions.region(REGION).https.onRequest((req, res) => handleToggleWatchedWallet(req, res, 'dev'));
-export const toggleWatchedWalletPrd = functions.region(REGION).https.onRequest((req, res) => handleToggleWatchedWallet(req, res, 'prd'));
+export const toggleWatchedWalletDev = regionalFunctions.https.onRequest((req, res) => handleToggleWatchedWallet(req, res, 'dev'));
+export const toggleWatchedWalletPrd = regionalFunctions.https.onRequest((req, res) => handleToggleWatchedWallet(req, res, 'prd'));

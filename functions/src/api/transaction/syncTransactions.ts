@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { getActivePlan, PLAN_LIMITS } from '../../common/planLimits';
@@ -105,5 +105,5 @@ async function handleSyncTransactions(
   }
 }
 
-export const syncTransactionsDev = functions.region(REGION).https.onRequest((req, res) => handleSyncTransactions(req, res, 'dev'));
-export const syncTransactionsPrd = functions.region(REGION).https.onRequest((req, res) => handleSyncTransactions(req, res, 'prd'));
+export const syncTransactionsDev = regionalFunctions.https.onRequest((req, res) => handleSyncTransactions(req, res, 'dev'));
+export const syncTransactionsPrd = regionalFunctions.https.onRequest((req, res) => handleSyncTransactions(req, res, 'prd'));

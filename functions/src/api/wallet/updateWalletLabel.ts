@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { ResultSetHeader } from 'mysql2';
@@ -45,5 +45,5 @@ async function handleUpdateWalletLabel(
   }
 }
 
-export const updateWalletLabelDev = functions.region(REGION).https.onRequest((req, res) => handleUpdateWalletLabel(req, res, 'dev'));
-export const updateWalletLabelPrd = functions.region(REGION).https.onRequest((req, res) => handleUpdateWalletLabel(req, res, 'prd'));
+export const updateWalletLabelDev = regionalFunctions.https.onRequest((req, res) => handleUpdateWalletLabel(req, res, 'dev'));
+export const updateWalletLabelPrd = regionalFunctions.https.onRequest((req, res) => handleUpdateWalletLabel(req, res, 'prd'));

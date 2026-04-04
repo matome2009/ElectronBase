@@ -18,7 +18,8 @@ const { normalizeEnvProfile } = require('../../scripts/lib/workspace-env.cjs');
 
 const dbRootArg = process.argv[2];
 process.env.WORKSPACE_ENV_PROFILE = normalizeEnvProfile(dbRootArg);
-const DB_URL = process.env.FIREBASE_DATABASE_URL ||
+const DB_URL = process.env.APP_FIREBASE_DATABASE_URL ||
+  process.env.FIREBASE_DATABASE_URL ||
   'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 // サービスアカウントキーの自動検出

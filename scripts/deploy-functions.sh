@@ -82,7 +82,40 @@ if [ "$TARGET" = "prd" ] || [ "$TARGET" = "auth-prd" ]; then
 fi
 
 echo "🚀 Deploying: $TARGET"
-npx firebase deploy --only "$FUNCTIONS" --project "$PROJECT"
+DEPLOY_RESULT_FILE="$(mktemp)"
+DEPLOY_STDERR_FILE="$(mktemp)"
+cleanup_deploy_logs() {
+  rm -f "$DEPLOY_RESULT_FILE" "$DEPLOY_STDERR_FILE"
+}
+trap cleanup_deploy_logs EXIT
+
+set +e
+NO_UPDATE_NOTIFIER=1 npx firebase deploy --only "$FUNCTIONS" --project "$PROJECT" --json >"$DEPLOY_RESULT_FILE" 2>"$DEPLOY_STDERR_FILE"
+DEPLOY_EXIT=$?
+set -e
+
+if [ -s "$DEPLOY_STDERR_FILE" ]; then
+  cat "$DEPLOY_STDERR_FILE" >&2
+fi
+
+DEPLOY_STATUS="$(node -e "const fs=require('fs');try{const json=JSON.parse(fs.readFileSync(process.argv[1],'utf8'));console.log(json.status||'');}catch{console.log('');}" "$DEPLOY_RESULT_FILE")"
+CLEANUP_POLICY_WARNING="Functions successfully deployed but could not set up cleanup policy in location"
+
+if grep -q "$CLEANUP_POLICY_WARNING" "$DEPLOY_RESULT_FILE" || grep -q "$CLEANUP_POLICY_WARNING" "$DEPLOY_STDERR_FILE"; then
+  echo ""
+  echo "⚠ Functions deployed, but Artifact Registry cleanup policy is not configured."
+  echo "  Run once to set it up:"
+  echo "  firebase functions:artifacts:setpolicy --project \"$PROJECT\" --location \"$REGION\" --days 30 --force"
+  DEPLOY_EXIT=0
+  DEPLOY_STATUS="success"
+fi
+
+if [ "$DEPLOY_EXIT" -ne 0 ] || [ "$DEPLOY_STATUS" != "success" ]; then
+  node -e "const fs=require('fs');const raw=fs.readFileSync(process.argv[1],'utf8').trim();if(!raw){process.exit(0)};try{const json=JSON.parse(raw);if(json.error){console.error(json.error)}else{console.error(JSON.stringify(json,null,2))}}catch{console.error(raw)}" "$DEPLOY_RESULT_FILE"
+  echo ""
+  echo "❌ Deploy failed. IAM update is skipped."
+  exit 1
+fi
 
 echo ""
 echo "✅ Done!"

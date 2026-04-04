@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
@@ -77,5 +77,5 @@ async function handleBackfillBlockTimestamps(
   }
 }
 
-export const backfillBlockTimestampsDev = functions.region(REGION).https.onRequest((req, res) => handleBackfillBlockTimestamps(req, res, 'dev'));
-export const backfillBlockTimestampsPrd = functions.region(REGION).https.onRequest((req, res) => handleBackfillBlockTimestamps(req, res, 'prd'));
+export const backfillBlockTimestampsDev = regionalFunctions.https.onRequest((req, res) => handleBackfillBlockTimestamps(req, res, 'dev'));
+export const backfillBlockTimestampsPrd = regionalFunctions.https.onRequest((req, res) => handleBackfillBlockTimestamps(req, res, 'prd'));

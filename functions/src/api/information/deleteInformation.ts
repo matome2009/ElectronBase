@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyAdmin } from '../../common/auth';
 import { getAdminConnection } from '../../common/db';
 
@@ -29,5 +29,5 @@ async function handleDeleteInformation(
   }
 }
 
-export const deleteInformationDev = functions.region(REGION).https.onRequest((req, res) => handleDeleteInformation(req, res, 'dev'));
-export const deleteInformationPrd = functions.region(REGION).https.onRequest((req, res) => handleDeleteInformation(req, res, 'prd'));
+export const deleteInformationDev = regionalFunctions.https.onRequest((req, res) => handleDeleteInformation(req, res, 'dev'));
+export const deleteInformationPrd = regionalFunctions.https.onRequest((req, res) => handleDeleteInformation(req, res, 'prd'));

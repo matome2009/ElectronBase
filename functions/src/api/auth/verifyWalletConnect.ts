@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { ethers } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { findOrCreateUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser, NONCE_EXPIRY_MS } from './_helpers';
 
@@ -83,5 +83,5 @@ async function handleVerifyWalletConnect(
   res.json({ customToken, userId: uid });
 }
 
-export const verifyWalletConnectDev = functions.region(REGION).https.onRequest((req, res) => handleVerifyWalletConnect(req, res, 'dev'));
-export const verifyWalletConnectPrd = functions.region(REGION).https.onRequest((req, res) => handleVerifyWalletConnect(req, res, 'prd'));
+export const verifyWalletConnectDev = regionalFunctions.https.onRequest((req, res) => handleVerifyWalletConnect(req, res, 'dev'));
+export const verifyWalletConnectPrd = regionalFunctions.https.onRequest((req, res) => handleVerifyWalletConnect(req, res, 'prd'));

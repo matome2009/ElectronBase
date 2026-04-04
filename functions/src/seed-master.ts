@@ -20,7 +20,8 @@ if (keyArg) {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = keyArg.split('=')[1];
 }
 
-const DB_URL = process.env.FIREBASE_DATABASE_URL ||
+const DB_URL = process.env.APP_FIREBASE_DATABASE_URL ||
+  process.env.FIREBASE_DATABASE_URL ||
   'https://token-batch-transfer-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 if (!admin.apps.length) {

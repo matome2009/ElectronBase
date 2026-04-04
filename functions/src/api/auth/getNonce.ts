@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import { ethers } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 
 // getNonce は廃止。フロントエンドでnonce（UUID）を生成し、
 // 署名メッセージに含めて verifyWalletConnect に送る方式に変更。
@@ -26,5 +26,5 @@ async function handleGetNonce(
   res.json({ nonce });
 }
 
-export const getNonceDev = functions.region(REGION).https.onRequest((req, res) => handleGetNonce(req, res, 'dev'));
-export const getNoncePrd = functions.region(REGION).https.onRequest((req, res) => handleGetNonce(req, res, 'prd'));
+export const getNonceDev = regionalFunctions.https.onRequest((req, res) => handleGetNonce(req, res, 'dev'));
+export const getNoncePrd = regionalFunctions.https.onRequest((req, res) => handleGetNonce(req, res, 'prd'));

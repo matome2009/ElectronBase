@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { findOrCreateUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser } from './_helpers';
 
@@ -41,5 +41,5 @@ async function handleVerifyGoogleToken(
   res.json({ customToken, userId: uid });
 }
 
-export const verifyGoogleTokenDev = functions.region(REGION).https.onRequest((req, res) => handleVerifyGoogleToken(req, res, 'dev'));
-export const verifyGoogleTokenPrd = functions.region(REGION).https.onRequest((req, res) => handleVerifyGoogleToken(req, res, 'prd'));
+export const verifyGoogleTokenDev = regionalFunctions.https.onRequest((req, res) => handleVerifyGoogleToken(req, res, 'dev'));
+export const verifyGoogleTokenPrd = regionalFunctions.https.onRequest((req, res) => handleVerifyGoogleToken(req, res, 'prd'));

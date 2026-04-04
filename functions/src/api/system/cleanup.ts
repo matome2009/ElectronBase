@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { REGION } from '../../common/cors';
+import { regionalFunctions } from '../../common/cors';
 import { deleteInactiveGuestUsers } from '../../common/db';
 
 // ============================================================
@@ -8,8 +8,7 @@ import { deleteInactiveGuestUsers } from '../../common/db';
 // 対象: login_t に紐付けなし かつ last_login_at が1年以上前
 // ============================================================
 
-export const cleanupInactiveGuestUsersDev = functions
-  .region(REGION)
+export const cleanupInactiveGuestUsersDev = regionalFunctions
   .pubsub.schedule('0 18 1 * *') // UTC 18:00 = JST 03:00
   .timeZone('UTC')
   .onRun(async () => {
@@ -17,8 +16,7 @@ export const cleanupInactiveGuestUsersDev = functions
     functions.logger.info(`[cleanupInactiveGuestUsers][dev] deleted ${deleted} guest users`);
   });
 
-export const cleanupInactiveGuestUsersPrd = functions
-  .region(REGION)
+export const cleanupInactiveGuestUsersPrd = regionalFunctions
   .pubsub.schedule('0 18 1 * *')
   .timeZone('UTC')
   .onRun(async () => {
@@ -41,8 +39,7 @@ async function cleanupUsedNonces(env: 'dev' | 'prd'): Promise<number> {
   return Object.keys(updates).length;
 }
 
-export const cleanupUsedNoncesDev = functions
-  .region(REGION)
+export const cleanupUsedNoncesDev = regionalFunctions
   .pubsub.schedule('0 19 * * *') // UTC 19:00 = JST 04:00
   .timeZone('UTC')
   .onRun(async () => {
@@ -50,8 +47,7 @@ export const cleanupUsedNoncesDev = functions
     functions.logger.info(`[cleanupUsedNonces][dev] deleted ${deleted} used nonces`);
   });
 
-export const cleanupUsedNoncesPrd = functions
-  .region(REGION)
+export const cleanupUsedNoncesPrd = regionalFunctions
   .pubsub.schedule('0 19 * * *')
   .timeZone('UTC')
   .onRun(async () => {

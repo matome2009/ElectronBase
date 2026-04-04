@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { findOrCreateUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser, verifyAppleIdToken, APPLE_CLIENT_ID } from './_helpers';
 
@@ -41,5 +41,5 @@ async function handleVerifyAppleToken(
   res.json({ customToken, userId: uid });
 }
 
-export const verifyAppleTokenDev = functions.region(REGION).https.onRequest((req, res) => handleVerifyAppleToken(req, res, 'dev'));
-export const verifyAppleTokenPrd = functions.region(REGION).https.onRequest((req, res) => handleVerifyAppleToken(req, res, 'prd'));
+export const verifyAppleTokenDev = regionalFunctions.https.onRequest((req, res) => handleVerifyAppleToken(req, res, 'dev'));
+export const verifyAppleTokenPrd = regionalFunctions.https.onRequest((req, res) => handleVerifyAppleToken(req, res, 'prd'));

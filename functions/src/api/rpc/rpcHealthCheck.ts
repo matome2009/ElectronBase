@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { REGION } from '../../common/cors';
+import { regionalFunctions } from '../../common/cors';
 
 interface RpcPoolEntry {
   activeIndex: number;
@@ -125,16 +125,14 @@ async function runHealthCheck(dbRoot: string): Promise<{ checked: number; rotate
   return { checked, rotated };
 }
 
-export const rpcHealthCheckDev = functions
-  .region(REGION)
+export const rpcHealthCheckDev = regionalFunctions
   .pubsub.schedule('every 1 minutes')
   .onRun(async () => {
     const result = await runHealthCheck('dev');
     functions.logger.info(`[RpcHealthCheck DEV] Done: checked=${result.checked}, rotated=[${result.rotated.join(',')}]`);
   });
 
-export const rpcHealthCheckPrd = functions
-  .region(REGION)
+export const rpcHealthCheckPrd = regionalFunctions
   .pubsub.schedule('every 1 minutes')
   .onRun(async () => {
     const result = await runHealthCheck('prd');
@@ -158,10 +156,8 @@ function handleManualHealthCheck(dbRoot: string) {
   };
 }
 
-export const rpcHealthCheckManualDev = functions
-  .region(REGION)
+export const rpcHealthCheckManualDev = regionalFunctions
   .https.onRequest(handleManualHealthCheck('dev'));
 
-export const rpcHealthCheckManualPrd = functions
-  .region(REGION)
+export const rpcHealthCheckManualPrd = regionalFunctions
   .https.onRequest(handleManualHealthCheck('prd'));

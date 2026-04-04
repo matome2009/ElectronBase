@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { v4 as uuidv4 } from 'uuid';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { createUser, updateLastLoginAt } from '../../common/db';
 import { getOrCreateFirebaseUser } from './_helpers';
 
@@ -36,5 +36,5 @@ async function handleStartAsGuest(
   }
 }
 
-export const startAsGuestDev = functions.region(REGION).https.onRequest((req, res) => handleStartAsGuest(req, res, 'dev'));
-export const startAsGuestPrd = functions.region(REGION).https.onRequest((req, res) => handleStartAsGuest(req, res, 'prd'));
+export const startAsGuestDev = regionalFunctions.https.onRequest((req, res) => handleStartAsGuest(req, res, 'dev'));
+export const startAsGuestPrd = regionalFunctions.https.onRequest((req, res) => handleStartAsGuest(req, res, 'prd'));

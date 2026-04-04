@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { getAdminConnection } from '../../common/db';
 
 async function handleGetInformation(
@@ -28,5 +28,5 @@ async function handleGetInformation(
   }
 }
 
-export const getInformationDev = functions.region(REGION).https.onRequest((req, res) => handleGetInformation(req, res, 'dev'));
-export const getInformationPrd = functions.region(REGION).https.onRequest((req, res) => handleGetInformation(req, res, 'prd'));
+export const getInformationDev = regionalFunctions.https.onRequest((req, res) => handleGetInformation(req, res, 'dev'));
+export const getInformationPrd = regionalFunctions.https.onRequest((req, res) => handleGetInformation(req, res, 'prd'));

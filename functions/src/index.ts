@@ -9,7 +9,7 @@ import * as labelExports from './modules/label';
 import * as rpcExports from './modules/rpc';
 import { OPTIONAL_API_FLAGS } from './common/features';
 
-const databaseURL = process.env.FIREBASE_DATABASE_URL;
+const databaseURL = process.env.APP_FIREBASE_DATABASE_URL || process.env.FIREBASE_DATABASE_URL;
 
 admin.initializeApp(
   databaseURL

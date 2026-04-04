@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { ethers } from 'ethers';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { linkLoginToUser } from '../../common/db';
 import { LINE_CHANNEL_ID, APPLE_CLIENT_ID, verifyAppleIdToken } from './_helpers';
@@ -147,5 +147,5 @@ async function handleLinkLogin(
   }
 }
 
-export const linkLoginDev = functions.region(REGION).https.onRequest((req, res) => handleLinkLogin(req, res, 'dev'));
-export const linkLoginPrd = functions.region(REGION).https.onRequest((req, res) => handleLinkLogin(req, res, 'prd'));
+export const linkLoginDev = regionalFunctions.https.onRequest((req, res) => handleLinkLogin(req, res, 'dev'));
+export const linkLoginPrd = regionalFunctions.https.onRequest((req, res) => handleLinkLogin(req, res, 'prd'));

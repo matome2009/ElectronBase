@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { getAdminConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
 
@@ -65,5 +65,5 @@ async function handleGetMaintenance(
   }
 }
 
-export const getMaintenanceDev = functions.region(REGION).https.onRequest((req, res) => handleGetMaintenance(req, res, 'dev'));
-export const getMaintenancePrd = functions.region(REGION).https.onRequest((req, res) => handleGetMaintenance(req, res, 'prd'));
+export const getMaintenanceDev = regionalFunctions.https.onRequest((req, res) => handleGetMaintenance(req, res, 'dev'));
+export const getMaintenancePrd = regionalFunctions.https.onRequest((req, res) => handleGetMaintenance(req, res, 'prd'));

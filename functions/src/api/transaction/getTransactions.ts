@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
@@ -93,5 +93,5 @@ async function handleGetTransactions(
   }
 }
 
-export const getTransactionsDev = functions.region(REGION).https.onRequest((req, res) => handleGetTransactions(req, res, 'dev'));
-export const getTransactionsPrd = functions.region(REGION).https.onRequest((req, res) => handleGetTransactions(req, res, 'prd'));
+export const getTransactionsDev = regionalFunctions.https.onRequest((req, res) => handleGetTransactions(req, res, 'dev'));
+export const getTransactionsPrd = regionalFunctions.https.onRequest((req, res) => handleGetTransactions(req, res, 'prd'));

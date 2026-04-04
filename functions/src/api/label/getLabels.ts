@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
@@ -32,5 +32,5 @@ async function handleGetLabels(
   }
 }
 
-export const getLabelsDev = functions.region(REGION).https.onRequest((req, res) => handleGetLabels(req, res, 'dev'));
-export const getLabelsPrd = functions.region(REGION).https.onRequest((req, res) => handleGetLabels(req, res, 'prd'));
+export const getLabelsDev = regionalFunctions.https.onRequest((req, res) => handleGetLabels(req, res, 'dev'));
+export const getLabelsPrd = regionalFunctions.https.onRequest((req, res) => handleGetLabels(req, res, 'prd'));

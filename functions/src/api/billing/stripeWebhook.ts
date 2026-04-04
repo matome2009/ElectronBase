@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
-import { REGION } from '../../common/cors';
+import { regionalFunctions } from '../../common/cors';
 import { getConnection } from '../../common/db';
 import { getStripe, getStripeWebhookSecret } from './_helpers';
 import { ResultSetHeader } from 'mysql2';
@@ -109,5 +109,5 @@ async function handleStripeWebhook(
   res.json({ received: true });
 }
 
-export const stripeWebhookDev = functions.region(REGION).https.onRequest((req, res) => handleStripeWebhook(req, res, 'dev'));
-export const stripeWebhookPrd = functions.region(REGION).https.onRequest((req, res) => handleStripeWebhook(req, res, 'prd'));
+export const stripeWebhookDev = regionalFunctions.https.onRequest((req, res) => handleStripeWebhook(req, res, 'dev'));
+export const stripeWebhookPrd = regionalFunctions.https.onRequest((req, res) => handleStripeWebhook(req, res, 'prd'));

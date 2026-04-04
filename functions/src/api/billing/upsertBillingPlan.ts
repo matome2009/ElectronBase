@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyAdmin } from '../../common/auth';
 import { getAdminConnection } from '../../common/db';
 import { ResultSetHeader } from 'mysql2';
@@ -78,5 +78,5 @@ async function handleUpsertBillingPlan(
   }
 }
 
-export const upsertBillingPlanDev = functions.region(REGION).https.onRequest((req, res) => handleUpsertBillingPlan(req, res, 'dev'));
-export const upsertBillingPlanPrd = functions.region(REGION).https.onRequest((req, res) => handleUpsertBillingPlan(req, res, 'prd'));
+export const upsertBillingPlanDev = regionalFunctions.https.onRequest((req, res) => handleUpsertBillingPlan(req, res, 'dev'));
+export const upsertBillingPlanPrd = regionalFunctions.https.onRequest((req, res) => handleUpsertBillingPlan(req, res, 'prd'));

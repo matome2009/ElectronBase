@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as crypto from 'crypto';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { getAdminConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
 import type { AdminLevel } from '../../common/auth';
@@ -93,5 +93,5 @@ async function handleAdminLogin(
   }
 }
 
-export const adminLoginDev = functions.region(REGION).https.onRequest((req, res) => handleAdminLogin(req, res, 'dev'));
-export const adminLoginPrd = functions.region(REGION).https.onRequest((req, res) => handleAdminLogin(req, res, 'prd'));
+export const adminLoginDev = regionalFunctions.https.onRequest((req, res) => handleAdminLogin(req, res, 'dev'));
+export const adminLoginPrd = regionalFunctions.https.onRequest((req, res) => handleAdminLogin(req, res, 'prd'));

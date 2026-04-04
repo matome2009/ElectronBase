@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyAdmin } from '../../common/auth';
 import { getAdminConnection } from '../../common/db';
 
@@ -27,5 +27,5 @@ async function handleGetExcludeUsers(
   }
 }
 
-export const getExcludeUsersDev = functions.region(REGION).https.onRequest((req, res) => handleGetExcludeUsers(req, res, 'dev'));
-export const getExcludeUsersPrd = functions.region(REGION).https.onRequest((req, res) => handleGetExcludeUsers(req, res, 'prd'));
+export const getExcludeUsersDev = regionalFunctions.https.onRequest((req, res) => handleGetExcludeUsers(req, res, 'dev'));
+export const getExcludeUsersPrd = regionalFunctions.https.onRequest((req, res) => handleGetExcludeUsers(req, res, 'prd'));

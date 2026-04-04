@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { RowDataPacket } from 'mysql2';
@@ -39,5 +39,5 @@ async function handleGetWatchedWallets(
   }
 }
 
-export const getWatchedWalletsDev = functions.region(REGION).https.onRequest((req, res) => handleGetWatchedWallets(req, res, 'dev'));
-export const getWatchedWalletsPrd = functions.region(REGION).https.onRequest((req, res) => handleGetWatchedWallets(req, res, 'prd'));
+export const getWatchedWalletsDev = regionalFunctions.https.onRequest((req, res) => handleGetWatchedWallets(req, res, 'dev'));
+export const getWatchedWalletsPrd = regionalFunctions.https.onRequest((req, res) => handleGetWatchedWallets(req, res, 'prd'));

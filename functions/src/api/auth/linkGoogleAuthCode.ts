@@ -1,6 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { linkLoginToUser } from '../../common/db';
 
@@ -87,5 +87,5 @@ async function handleLinkGoogleAuthCode(
   res.json({ customToken });
 }
 
-export const linkGoogleAuthCodeDev = functions.region(REGION).https.onRequest((req, res) => handleLinkGoogleAuthCode(req, res, 'dev'));
-export const linkGoogleAuthCodePrd = functions.region(REGION).https.onRequest((req, res) => handleLinkGoogleAuthCode(req, res, 'prd'));
+export const linkGoogleAuthCodeDev = regionalFunctions.https.onRequest((req, res) => handleLinkGoogleAuthCode(req, res, 'dev'));
+export const linkGoogleAuthCodePrd = regionalFunctions.https.onRequest((req, res) => handleLinkGoogleAuthCode(req, res, 'prd'));

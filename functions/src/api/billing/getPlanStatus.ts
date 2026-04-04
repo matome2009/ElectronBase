@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyUser } from '../../common/auth';
 import { getConnection } from '../../common/db';
 import { getActivePlan, PLAN_LIMITS } from '../../common/planLimits';
@@ -77,5 +77,5 @@ async function handleGetPlanStatus(
   }
 }
 
-export const getPlanStatusDev = functions.region(REGION).https.onRequest((req, res) => handleGetPlanStatus(req, res, 'dev'));
-export const getPlanStatusPrd = functions.region(REGION).https.onRequest((req, res) => handleGetPlanStatus(req, res, 'prd'));
+export const getPlanStatusDev = regionalFunctions.https.onRequest((req, res) => handleGetPlanStatus(req, res, 'dev'));
+export const getPlanStatusPrd = regionalFunctions.https.onRequest((req, res) => handleGetPlanStatus(req, res, 'prd'));

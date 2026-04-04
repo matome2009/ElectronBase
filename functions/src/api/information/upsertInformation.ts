@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions';
-import { REGION, setCors } from '../../common/cors';
+import { regionalFunctions, setCors } from '../../common/cors';
 import { verifyAdmin } from '../../common/auth';
 import { getAdminConnection } from '../../common/db';
 
@@ -63,5 +63,5 @@ async function handleUpsertInformation(
   }
 }
 
-export const upsertInformationDev = functions.region(REGION).https.onRequest((req, res) => handleUpsertInformation(req, res, 'dev'));
-export const upsertInformationPrd = functions.region(REGION).https.onRequest((req, res) => handleUpsertInformation(req, res, 'prd'));
+export const upsertInformationDev = regionalFunctions.https.onRequest((req, res) => handleUpsertInformation(req, res, 'dev'));
+export const upsertInformationPrd = regionalFunctions.https.onRequest((req, res) => handleUpsertInformation(req, res, 'prd'));
